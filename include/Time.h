@@ -21,4 +21,4 @@ public:
     std::string GetTime() const;
 };
 
-#endif // TIME_H
+#endif // TIME_H bo scrivo a caso
