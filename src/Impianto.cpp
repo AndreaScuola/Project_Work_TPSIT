@@ -1,3 +1,1 @@
-//
-// Created by Standard on 10/05/2025.
-//
+#include "../include/Impianto.h"    //Collega il .cpp al .h

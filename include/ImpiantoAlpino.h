@@ -1,6 +1,4 @@
-//
-// Created by Standard on 10/05/2025.
-//
+//Qui bisogna dichiarare costanti e metodi
 
 #ifndef IMPIANTOALPINO_H
 #define IMPIANTOALPINO_H
