@@ -2,7 +2,7 @@
 
 #ifndef IMPIANTO_H
 #define IMPIANTO_H
-
+using namespace std;
 class Impianto {    //CLASSE VIRTUALE
 protected:
     int ID;
@@ -12,6 +12,7 @@ public:
     explicit Impianto(int id /*AGGIUNGERE*/) : ID{id} {}; //explicit --> blocca il costruttore "Impianto imp = "10"; " (Blocca conversioni implicite)
                                                     //permette solo --> "Impianto imp(10);"
     //AGGIUNGERE METODI
+    int getID() { return ID; };
 };
 
 #endif //IMPIANTO_H
