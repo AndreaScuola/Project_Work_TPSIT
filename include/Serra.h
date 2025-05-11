@@ -15,23 +15,10 @@ private:
 public:
     void Menu();
     void AggiornaOrario(int hour,int minutes);
-    void RimuoviImpianto(int ID) {
-        for (auto it = Impianti.begin(); it != Impianti.end(); ++it) {
-            if ((*it)->getID() == ID) {
-                Impianti.erase(it);
-                break;
-            }
-        }
-    }
-    void AggiungiImpianto(Impianto* impianto) {
-        if (impianto==NULL)
-            return;
-        else
-            Impianti.push_back(impianto);
-    }
+    void AggiungiImpianto(Impianto* impianto);
+    void RimuoviImpianto(int ID);
     string StampaStato();
     string SpegniImpiantoManuale();
-
 };
 
 

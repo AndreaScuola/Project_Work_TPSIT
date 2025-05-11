@@ -3,10 +3,9 @@
 #ifndef TIME_H
 #define TIME_H
 class Time {
+private:
 
-    private:
-
-    public:
+public:
 
 };
 #endif //TIME_H
