@@ -2,7 +2,7 @@
 
 #ifndef IMPIANTO_H
 #define IMPIANTO_H
-using namespace std;
+
 class Impianto {    //CLASSE VIRTUALE
 protected:
     int ID;
