@@ -9,16 +9,13 @@ private:
     int minute;
 
 public:
-    static const int MIN_HOUR   = 0;
-    static const int MAX_HOUR   = 23;
-    static const int MIN_MINUTE = 0;
-    static const int MAX_MINUTE = 59;
-
-    Time(int h = 0, int m = 0);
+    Time() {hour = 0; minute = 0;}  //Costruttore di default
+    Time(int h, int m) : hour{h}, minute{m} {}  //Costruttore valorizzato
 
     void Setter(int h, int m);
-    Time& operator++();
+    Time operator++(int); //MODIFICARE
+    bool operator==(const Time &other) const;   //Parametri da confrontare, const perché non vanno modificati
     std::string GetTime() const;
 };
 
-#endif // TIME_H bo scrivo a caso
+#endif // TIME_H

@@ -9,10 +9,11 @@
 class Serra{
 
 private:
-    vector<Impianto*> Impianti;
+    vector<Impianto*> Impianti; //VALUTARE SE MODIFICARE CON MAP IN BASE ALL'ESERCIZIO
     Time now;
 
 public:
+    //COSTRUTTORE DA AGGIUNGERE
     void Menu();
     void AggiornaOrario(int hour,int minutes);
     void AggiungiImpianto(Impianto* impianto);
