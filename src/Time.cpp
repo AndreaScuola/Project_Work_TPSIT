@@ -41,3 +41,9 @@ std::string Time::GetTime() const {
         << std::setw(2) << std::setfill('0') << minute; //Se m < 10 scrive "0n"
     return oss.str();
 }
+
+std::ostream & operator<<(std::ostream &os, const Time &obj) {
+    return os
+           << "hour: " << obj.hour
+           << " minute: " << obj.minute;
+}

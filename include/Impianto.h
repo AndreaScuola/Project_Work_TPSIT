@@ -2,44 +2,41 @@
 #ifndef IMPIANTO_H
 #define IMPIANTO_H
 
-using namespace std;
-
 #include <string>
 #include "Time.h"
-
-int GetID(int id) {
-
-}
-string Accendi(Time accensione) {
-
-}
-string Spegni(Time spegni) {
-
-}
-string Stampa(string frase) {
-
-}
 
 class Impianto {    //CLASSE VIRTUALE
 protected:
     int ID;
-    string TipoPianta;
-    string Nome;
-    bool accesso;
+    std::string Nome;
+    bool acceso;
     Time accensione;
     Time ultimaAccensione;
-    Time tempospegni;
+    Time tempoSpegni;
+    static int prossimoID;
 
     //AGGIUNGERE
 
 public:
-    explicit Impianto(int id /*AGGIUNGERE*/) : ID{id} {}; //explicit --> blocca il costruttore "Impianto imp = "10"; " (Blocca conversioni implicite)
+    //dichiarazione del costruttore
+    explicit Impianto(const std::string n);
+
+    //metodi da implementare/ridefinire
+    virtual std::string Accendi(Time t) = 0;
+    virtual std::string Spegni(Time t) = 0;
+    virtual std::string Stampa(std::string frase) const;
+
+    int GetID() const { return ID; }
+
+/*
+    explicit Impianto(std::string n) n(Nome), id(prossimoID++) {};//explicit --> blocca il costruttore "Impianto imp = "10"; " (Blocca conversioni implicite)
                                                     //permette solo --> "Impianto imp(10);"
     //AGGIUNGERE METODI
     int GetID(int id) { return ID; };
-    string Accendi(Time accensione);
-    string Spegni(Time spegni);
-    string Stampa(string frase);
+    std::string Accendi(Time accensione);
+    std::string Spegni(Time spegni);
+    std::string Stampa(std::string frase);
+*/
 };
 
 #endif //IMPIANTO_H
