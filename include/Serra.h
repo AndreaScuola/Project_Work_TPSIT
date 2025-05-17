@@ -9,7 +9,7 @@
 class Serra{
 
 private:
-    vector<Impianto*> Impianti; //VALUTARE SE MODIFICARE CON MAP IN BASE ALL'ESERCIZIO
+    std::vector<Impianto*> Impianti;
     Time now;
 
 public:
@@ -18,9 +18,8 @@ public:
     void AggiornaOrario(int hour,int minutes);
     void AggiungiImpianto(Impianto* impianto);
     void RimuoviImpianto(int ID);
-    string StampaStato();
-    string SpegniImpiantoManuale();
+    std::string StampaStato();
+    std::string SpegniImpiantoManuale();
 };
-
 
 #endif //SERRA_H

@@ -8,7 +8,7 @@ private:
     Time tempoAcceso;  // totale tempo di funzionamento
 
 public:
-    explicit Automatico(const std::string n);
+    explicit Automatico(const std::string n, int oreAcceso, int minutiAcceso);
 
     // implementazione dei metodi puri
     std::string Accendi(const Time t) override;
@@ -16,6 +16,7 @@ public:
 
     // (opzionale) getter per tempoAcceso
     Time GetTempoAcceso() const;
+    std::string toString() const;
 };
 
 

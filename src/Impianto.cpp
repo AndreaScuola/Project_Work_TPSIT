@@ -1,7 +1,8 @@
-#include "../include/Impianto.h"    //Collega il .cpp al .h
+#include "Impianto.h"    //Collega il .cpp al .h
 
 int Impianto::prossimoID = 1;
 
 
-Impianto::Impianto(const std::string n) : ID(prossimoID++), Nome(n),
+Impianto::Impianto(const std::string n) : ID(prossimoID++), Nome(n),        //Costruttore dell'impianto
 acceso(false), accensione(), ultimaAccensione(), tempoSpegni() {}
+

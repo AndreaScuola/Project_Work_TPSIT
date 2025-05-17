@@ -1,4 +1,6 @@
-#include "../include/Serra.h"    //Collega il .cpp al .h
+#include "Serra.h"    //Collega il .cpp al .h
+
+#include <iostream>
 
 void Serra :: Menu() {
     //CODICE
@@ -20,15 +22,17 @@ void Serra :: RimuoviImpianto(int ID) {
     for (auto it = Impianti.begin(); it != Impianti.end(); ++it) {
         if ((*it)->getID() == ID) {
             Impianti.erase(it);
-            break;
+            std::cout << "Impianto rimosso con successo" << std::endl;
+            return;
         }
     }
+    std::cout << "ERRORE! Impianto non trovato" << std::endl;
 }
 
-string Serra :: StampaStato() {
+std::string Serra :: StampaStato() {
     //CODICE
 }
 
-string Serra :: SpegniImpiantoManuale() {
+std::string Serra :: SpegniImpiantoManuale() {
     //CODICE
 }

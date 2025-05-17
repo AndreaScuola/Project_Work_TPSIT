@@ -20,13 +20,12 @@ protected:
 public:
     //dichiarazione del costruttore
     explicit Impianto(const std::string n);
+    int GetID() const { return ID; }
 
     //metodi da implementare/ridefinire
     virtual std::string Accendi(Time t) = 0;
     virtual std::string Spegni(Time t) = 0;
     virtual std::string Stampa(std::string frase) const;
-
-    int GetID() const { return ID; }
 
 /*
     explicit Impianto(std::string n) n(Nome), id(prossimoID++) {};//explicit --> blocca il costruttore "Impianto imp = "10"; " (Blocca conversioni implicite)
