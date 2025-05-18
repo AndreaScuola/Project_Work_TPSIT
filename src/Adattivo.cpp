@@ -32,25 +32,31 @@ float Adattivo::randomFloat(float min, float max) { //Random
     return dist(gen);
 }
 
-void Adattivo::Accendi(const Time& t) {   //Accende l'impianto se la temperatura cala sotto una certa soglia
+void Adattivo::Avanza(const Time &now) {
+    Accendi(now);
+    Spegni(now);
+}
+
+
+void Adattivo::Accendi(const Time& now) {   //Accende l'impianto se la temperatura cala sotto una certa soglia
     if (temperatura < 25.0f) {
         acceso = true;
 
         //Stampo il messaggio per l'accensione
         std::ostringstream oss;
         oss << "Impianto adattivo: " << Nome << " con ID: " << ID << " si è acceso, temperatura: " << temperatura << "°C" << std::endl;
-        logMessage(t, oss.str(), 0);
+        logMessage(now, oss.str(), 0);
     }
 }
 
-void Adattivo::Spegni(const Time& t) { //Spegne l'impianto se la temperatura supera una certa soglia
+void Adattivo::Spegni(const Time& now) { //Spegne l'impianto se la temperatura supera una certa soglia
     if (temperatura >= 28.0f) {
         acceso = false;
 
         //Stampo il messaggio per lo spegnimento
         std::ostringstream oss;
         oss << "Impianto adattivo: " << Nome << " con ID: " << ID << " si è spento, temperatura: " << temperatura << "°C" << std::endl;
-        logMessage(t, oss.str(), 0);
+        logMessage(now, oss.str(), 0);
     }
 }
 

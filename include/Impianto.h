@@ -21,8 +21,9 @@ public:
     int GetID() const { return ID; }
 
     //metodi da implementare/ridefinire
-    virtual void Accendi(const Time& t) = 0;
-    virtual void Spegni(const Time& t) = 0;
+    virtual void Avanza(const Time& now) = 0;  //Metodo che viene richiamato in modo diverso in base alla classe figlia per diverse gestioni
+    virtual void Accendi(const Time& now) = 0;
+    virtual void Spegni(const Time& now) = 0;
     virtual std::string toString() const;
 };
 

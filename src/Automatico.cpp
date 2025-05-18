@@ -23,14 +23,19 @@ void Automatico::SetAccensione(const Time& t) {   //Imposta l'ora a cui accender
     logMessage(t, oss.str(), 0);
 }
 
-void Automatico::Accendi(const Time& t) {   //Accende l'impianto se è l'ora di farlo, altrimenti non fa niente
-    if (tempoAccensione == t) {
+void Automatico::Avanza(const Time& now) {
+    Accendi(now);
+    Spegni(now);
+}
+
+void Automatico::Accendi(const Time& now) {   //Accende l'impianto se è l'ora di farlo, altrimenti non fa niente
+    if (tempoAccensione == now) {
         std::ostringstream oss;
 
         acceso = true;
-        ultimaAccensione = t;
+        ultimaAccensione = now;
         oss << "Impianto automatico: " << Nome << " con ID: " << ID << " è stato acceso" << std::endl;
-        logMessage(t, oss.str(), 0);
+        logMessage(now, oss.str(), 0);
     }
 }
 
@@ -43,19 +48,19 @@ void Automatico::OraSpegnimento() {   //Calcola a partire dai parametri passati 
             tempoSpegnimento++;
 }
 
-void Automatico::Spegni(const Time& t) {    //Se è arrivata l'ora di spegnersi si spegne, altrimenti non stampa nulla
-    if (tempoSpegnimento == t) {
+void Automatico::Spegni(const Time& now) {    //Se è arrivata l'ora di spegnersi si spegne, altrimenti non stampa nulla
+    if (tempoSpegnimento == now) {
         std::ostringstream oss;
 
         if (!acceso) {  //Controlla che l'impianto non sia già spento
             oss << "Impianto automatico: " << Nome << " con ID: " << ID << " è già spento" << std::endl;
-            logMessage(t, oss.str(), 1);
+            logMessage(now, oss.str(), 1);
             return;
         }
 
         acceso = false;
         oss << "Impianto automatico: " << Nome << " con ID: " << ID << " è stato spento" << std::endl;
-        logMessage(t, oss.str(), 0);
+        logMessage(now, oss.str(), 0);
     }
 }
 

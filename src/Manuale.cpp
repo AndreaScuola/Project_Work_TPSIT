@@ -20,29 +20,34 @@ void Manuale::SetAccensione(const Time& t) {   //Imposta l'ora a cui accendere l
     logMessage(t, oss.str(), 0);
 }
 
-void Manuale::Accendi(const Time& t) {  //Compara l'orario della serra (quello passato) e controlla se accendere l'impianto
-    if (tempoAccensione == t) {
+void Manuale::Avanza(const Time &now) { //Nella classe manuale ogni minuto bisogna controllare se è l'ora di accendere l'impianto (spegnimento gestito con comando)
+    Accendi(now);
+}
+
+
+void Manuale::Accendi(const Time& now) {  //Compara l'orario della serra (quello passato) e controlla se accendere l'impianto
+    if (tempoAccensione == now) {
         std::ostringstream oss;
 
         acceso = true;
-        ultimaAccensione = t;
+        ultimaAccensione = now;
         oss << "Impianto manuale: " << Nome << " con ID: " << ID << " è stato acceso" << std::endl;
-        logMessage(t, oss.str(), 0);
+        logMessage(now, oss.str(), 0);
     }
 }
 
-void Manuale::Spegni(const Time& t /*t-->Ora della serra*/) {   //Se da comando viene spento --> Spegne l'impianto
+void Manuale::Spegni(const Time& now) {   //Se da comando viene spento --> Spegne l'impianto
     std::ostringstream oss;
 
     if (!acceso) {  //Controlla che l'impianto non sia già spento
         oss << "Impianto manuale: " << Nome << " con ID: " << ID << " è già spento" << std::endl;
-        logMessage(t, oss.str(), 1);
+        logMessage(now, oss.str(), 1);
         return;
     }
 
     acceso = false;
     oss << "Impianto manuale: " << Nome << " con ID: " << ID << " è stato spento" << std::endl;
-    logMessage(t, oss.str(), 0);
+    logMessage(now, oss.str(), 0);
 }
 
 std::string Manuale::toString() const{

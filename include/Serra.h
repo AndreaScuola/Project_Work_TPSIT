@@ -13,13 +13,13 @@ private:
     Time now;
 
 public:
-    //COSTRUTTORE DA AGGIUNGERE
+    Serra() : now(0, 0), Impianti{} {} //Costruttore
     void Menu();
     void AggiornaOrario(int hour,int minutes);
     void AggiungiImpianto(Impianto* impianto);
     void RimuoviImpianto(int ID);
     std::string StampaStato();
-    std::string SpegniImpiantoManuale();
+    void SpegniImpiantoManuale();
 };
 
 #endif //SERRA_H

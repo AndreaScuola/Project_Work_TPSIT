@@ -15,8 +15,9 @@ public:
     void gestioneAdattivo(const Time& t);    //Richiamato ogni minuto --> gestisce accensione, spegnimento, ecc...
 
     //Implementazione dei metodi puri
-    void Accendi(const Time& t) override;
-    void Spegni(const Time& t) override;
+    void Avanza(const Time& now) override;  //Deve chiamare Accendi e Spegni per l'adattivo
+    void Accendi(const Time& now) override;
+    void Spegni(const Time& now) override;
     std::string toString() const override;
 };
 

@@ -1,6 +1,6 @@
 #include <ostream>
 #include <sstream>
-#include <stdexcept>  //Per std::invalid_argument
+#include "UserInterface.h"
 #include "Time.h"
 
 #define MIN_HOUR 0
@@ -8,13 +8,25 @@
 #define MIN_MINUTE 0
 #define MAX_MINUTE 59
 
-void Time::Setter(int h, int m) {
-    if (h < MIN_HOUR || h > MAX_HOUR || m < MIN_MINUTE || m > MAX_MINUTE)
-        throw std::invalid_argument("Orario non valido");       //CONSIDERARE SE MODIFICARE CON LOGMESSAGE
+void Time::Setter(int h, int m, std::vector<Impianto*>* impianti) {
+    if (h < MIN_HOUR || h > MAX_HOUR || m < MIN_MINUTE || m > MAX_MINUTE) {
+        logMessage(*this, "Ora non valida", 1);
+        return;
+    }
 
-    while (hour != h || minute != m)  //Fa scatti di minuto in minuto fino a quando non raggiunge l'ora desiderata
-        (*this)++;
+    while (hour != h || minute != m) {
+        (*this)++;  //Avanza di un minuto alla volta
+
+        if (impianti != nullptr)
+            for (Impianto* impianto : *impianti) {
+                if (impianto != nullptr)
+                    impianto->Avanza(); //Avanza è un metodo virtuale gestito in modo diverso in base alla classe figlio
+            }
+    }
+
+    logMessage(*this, "Ora impostata raggiunta con successo", 0);
 }
+
 
 Time Time::operator++(int) {  //MODIFICARE
     minute++;

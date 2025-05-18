@@ -16,8 +16,9 @@ public:
     void SetAccensione(const Time& t);
 
     //Implementazione dei metodi puri
-    void Accendi(const Time& t) override;
-    void Spegni(const Time& t) override;
+    void Avanza(const Time& now) override;  //Nella classe automatico deve chiamare Accendi e Spegni
+    void Accendi(const Time& now) override;
+    void Spegni(const Time& now) override;
     std::string toString() const override;
 };
 
