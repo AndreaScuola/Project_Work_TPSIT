@@ -24,7 +24,7 @@ Time Time::operator++(int) {  //MODIFICARE
 
         if (hour > MAX_HOUR)    //Controlla che h non sia >= 24
             hour = 0;
-            //FORSE INTERROMPERE ESECUZIONE
+            //FORSE INTERROMPERE ESECUZIONE  --> Vedere come gestire le 24:00
     }
 
     return *this;
