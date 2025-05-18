@@ -1,8 +1,10 @@
 #ifndef TIME_H
 #define TIME_H
 
+
 #include <ostream>
 #include <string>
+#include <stdexcept>   //Necessario per std::invalid_argument
 
 class Time {
 private:

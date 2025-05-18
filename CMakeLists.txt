@@ -14,7 +14,7 @@ add_library(Time STATIC ${SOURCE_DIR}/Time.cpp)
 add_library(Manuale STATIC ${SOURCE_DIR}/Manuale.cpp)
 add_library(Automatico STATIC ${SOURCE_DIR}/Automatico.cpp)
 add_library(Adattivo STATIC ${SOURCE_DIR}/Adattivo.cpp)
-
+add_library(UserInterface STATIC ${SOURCE_DIR}/UserInterface.cpp)
 
 add_executable(Project_Work_TPSIT ${SOURCE_DIR}/main.cpp)
 

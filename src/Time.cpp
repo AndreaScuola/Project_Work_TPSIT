@@ -1,6 +1,7 @@
-#include "../include/time.h"
+#include <ostream>
 #include <sstream>
-#include <iomanip>  //Per GetTime che ritorni "02:08" se h = 2 e m = 8
+#include <stdexcept>  //Per std::invalid_argument
+#include "Time.h"
 
 #define MIN_HOUR 0
 #define MAX_HOUR 23
@@ -9,7 +10,7 @@
 
 void Time::Setter(int h, int m) {
     if (h < MIN_HOUR || h > MAX_HOUR || m < MIN_MINUTE || m > MAX_MINUTE)
-        throw std::invalid_argument("Orario non valido");
+        throw std::invalid_argument("Orario non valido");       //CONSIDERARE SE MODIFICARE CON LOGMESSAGE
 
     while (hour != h || minute != m)  //Fa scatti di minuto in minuto fino a quando non raggiunge l'ora desiderata
         (*this)++;
@@ -35,16 +36,18 @@ bool Time::operator==(const Time &other) const {
 }
 
 std::string Time::GetTime() const {
-    std::ostringstream oss;
-    oss << std::setw(2) << std::setfill('0') << hour    //Se h < 10 scrive "0n"
-        << ":"
-        << std::setw(2) << std::setfill('0') << minute; //Se m < 10 scrive "0n"
-    return oss.str();
+    //Usa due cifre per hour e minute
+    std::string hh = (hour < 10 ? "0" : "") + std::to_string(hour);
+    std::string mm = (minute < 10 ? "0" : "") + std::to_string(minute);
+    return hh + ":" + mm;
 }
 
 //CAPIRE A COSA SERVE OPERATOR << PER USERINTERFACE.cpp E SISTEMARLO
 std::ostream & operator<<(std::ostream &os, const Time &obj) {
+    /*
     return os
            << "hour: " << obj.hour
            << " minute: " << obj.minute;
+    */
+    return os;  //COMMENTATA AL MOMENTO, MODIFICARE TUTTO L'OPERATOR <<
 }

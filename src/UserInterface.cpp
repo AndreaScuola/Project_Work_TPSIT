@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "Time.h"
+#include "UserInterface.h"
 
 void logMessage(const Time &time, const std::string &message, const int &errorLevel) {
     if (errorLevel == 0)
@@ -12,7 +13,8 @@ void logMessage(const Time &time, const std::string &message, const int &errorLe
         std::cerr << "[" << time << "]\t" << message << std::endl;
 }
 
-
+/*
+COMMENTATA SOLO MOMENTANEAMENTE
 std::vector<std::string> commandParser(const std::string &command) {
     std::vector<std::string> tokens;
     std::istringstream ss(command);
@@ -136,3 +138,4 @@ void processCommand(const std::string &command) {
         throw std::invalid_argument("Errore: comando '" + action + "' non riconosciuto.");
     }
 }
+*/

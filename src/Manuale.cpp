@@ -1,6 +1,6 @@
 #include "Manuale.h"
 #include <sstream>
-#include <../src/UserInterface.cpp> //per logMessage
+#include "UserInterface.h" //Per logMessage
 
 Manuale::Manuale(const std::string& n) : Impianto(n) {}
 
@@ -10,13 +10,13 @@ void Manuale::SetAccensione(const Time& t) {   //Imposta l'ora a cui accendere l
 
     if (acceso){
         //Se è già acceso dà errore
-        oss << "Impianto manuale: " << Nome << " con ID: " << ID << "è già acceso" << std::endl;
+        oss << "Impianto manuale: " << Nome << " con ID: " << ID << " è già acceso" << std::endl;
         logMessage(t, oss.str(), 1);
         return;
     }
 
     tempoAccensione = t; //Imposta l'ora in cui dovrà accendersi
-    oss << "Accensione dell'impianto manuale: " << Nome << " con ID: " << ID << "impostata alle"/* <<AGGIUNGI STAMPA ORA << */ << std::endl;
+    oss << "Accensione dell'impianto manuale: " << Nome << " con ID: " << ID << " impostata alle"/* <<AGGIUNGI STAMPA ORA << */ << std::endl;
     logMessage(t, oss.str(), 0);
 }
 
@@ -26,7 +26,7 @@ void Manuale::Accendi(const Time& t) {  //Compara l'orario della serra (quello p
 
         acceso = true;
         ultimaAccensione = t;
-        oss << "Impianto manuale: " << Nome << " con ID: " << ID << "è stato acceso" << std::endl;
+        oss << "Impianto manuale: " << Nome << " con ID: " << ID << " è stato acceso" << std::endl;
         logMessage(t, oss.str(), 0);
     }
 }
@@ -35,13 +35,13 @@ void Manuale::Spegni(const Time& t /*t-->Ora della serra*/) {   //Se da comando 
     std::ostringstream oss;
 
     if (!acceso) {  //Controlla che l'impianto non sia già spento
-        oss << "Impianto manuale: " << Nome << " con ID: " << ID << "è già spento" << std::endl;
+        oss << "Impianto manuale: " << Nome << " con ID: " << ID << " è già spento" << std::endl;
         logMessage(t, oss.str(), 1);
         return;
     }
 
     acceso = false;
-    oss << "Impianto manuale: " << Nome << " con ID: " << ID << "è stato spento" << std::endl;
+    oss << "Impianto manuale: " << Nome << " con ID: " << ID << " è stato spento" << std::endl;
     logMessage(t, oss.str(), 0);
 }
 

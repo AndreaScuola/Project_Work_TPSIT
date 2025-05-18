@@ -1,7 +1,6 @@
 #ifndef MANUALE_H
 #define MANUALE_H
 
-
 #include "Impianto.h"
 
 class Manuale : public Impianto {

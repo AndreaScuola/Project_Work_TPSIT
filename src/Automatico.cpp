@@ -1,6 +1,6 @@
 #include "Automatico.h"
 #include <sstream>
-#include <../src/UserInterface.cpp> //per logMessage
+#include "UserInterface.h" //Per logMessage
 
 Automatico::Automatico(const std::string& n, int oreAcceso, int minutiAcceso) : Impianto(n), oreAcceso(oreAcceso), minutiAcceso(minutiAcceso) {}
 
@@ -9,7 +9,7 @@ void Automatico::SetAccensione(const Time& t) {   //Imposta l'ora a cui accender
 
     if (acceso){
         //Se è già acceso dà errore
-        oss << "Impianto automatico: " << Nome << " con ID: " << ID << "è già acceso" << std::endl;
+        oss << "Impianto automatico: " << Nome << " con ID: " << ID << " è già acceso" << std::endl;
         logMessage(t, oss.str(), 1);
         return;
     }
@@ -19,7 +19,7 @@ void Automatico::SetAccensione(const Time& t) {   //Imposta l'ora a cui accender
     tempoSpegnimento = t;
     OraSpegnimento();   //Calcolo l'ora a cui si deve spegnere a partire da quella di accensione
 
-    oss << "Accensione dell'impianto automatico: " << Nome << " con ID: " << ID << "impostata alle"/* <<AGGIUNGI STAMPA ORA << */ << std::endl;
+    oss << "Accensione dell'impianto automatico: " << Nome << " con ID: " << ID << " impostata alle"/* <<AGGIUNGI STAMPA ORA << */ << std::endl;
     logMessage(t, oss.str(), 0);
 }
 
@@ -29,7 +29,7 @@ void Automatico::Accendi(const Time& t) {   //Accende l'impianto se è l'ora di 
 
         acceso = true;
         ultimaAccensione = t;
-        oss << "Impianto automatico: " << Nome << " con ID: " << ID << "è stato acceso" << std::endl;
+        oss << "Impianto automatico: " << Nome << " con ID: " << ID << " è stato acceso" << std::endl;
         logMessage(t, oss.str(), 0);
     }
 }
@@ -48,13 +48,13 @@ void Automatico::Spegni(const Time& t) {    //Se è arrivata l'ora di spegnersi 
         std::ostringstream oss;
 
         if (!acceso) {  //Controlla che l'impianto non sia già spento
-            oss << "Impianto automatico: " << Nome << " con ID: " << ID << "è già spento" << std::endl;
+            oss << "Impianto automatico: " << Nome << " con ID: " << ID << " è già spento" << std::endl;
             logMessage(t, oss.str(), 1);
             return;
         }
 
         acceso = false;
-        oss << "Impianto automatico: " << Nome << " con ID: " << ID << "è stato spento" << std::endl;
+        oss << "Impianto automatico: " << Nome << " con ID: " << ID << " è stato spento" << std::endl;
         logMessage(t, oss.str(), 0);
     }
 }
