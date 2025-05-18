@@ -1,7 +1,7 @@
 //Qui bisogna dichiarare costanti e metodi
 #ifndef SERRA_H
 #define SERRA_H
-#include <Impianto.h>
+#include "Impianto.h"
 #include <vector>
 #include <Time.h>
 #include <string>

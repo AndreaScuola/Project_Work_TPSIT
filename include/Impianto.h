@@ -24,7 +24,7 @@ public:
     virtual void Avanza(const Time& now) = 0;  //Metodo che viene richiamato in modo diverso in base alla classe figlia per diverse gestioni
     virtual void Accendi(const Time& now) = 0;
     virtual void Spegni(const Time& now) = 0;
-    virtual std::string toString() const;
+    virtual std::string toString()const = 0;
 };
 
 #endif //IMPIANTO_H

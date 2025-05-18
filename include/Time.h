@@ -3,9 +3,9 @@
 
 #include <ostream>
 #include <string>
-#include <stdexcept>   //Necessario per std::invalid_argument
-#include "Impianto.h"
 #include <vector>
+
+class Impianto;        // <-- forward declaration
 
 class Time {
 private:
@@ -20,8 +20,6 @@ public:
     Time operator++(int); //MODIFICARE
     bool operator==(const Time &other) const;   //Parametri da confrontare, const perché non vanno modificati
     std::string GetTime() const;
-    int get_hour() const {return hour;} //Getter per operator <<
-    int get_minute() const {return minute;}
 };
 
 std::ostream & operator<<(std::ostream &os, const Time &obj);

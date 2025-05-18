@@ -2,6 +2,7 @@
 #include <sstream>
 #include "UserInterface.h"
 #include "Time.h"
+#include "Impianto.h"
 
 #define MIN_HOUR 0
 #define MAX_HOUR 23
@@ -20,7 +21,7 @@ void Time::Setter(int h, int m, std::vector<Impianto*>* impianti) {
         if (impianti != nullptr)
             for (Impianto* impianto : *impianti) {
                 if (impianto != nullptr)
-                    impianto->Avanza(); //Avanza è un metodo virtuale gestito in modo diverso in base alla classe figlio
+                    impianto->Avanza(*this); //Avanza è un metodo virtuale gestito in modo diverso in base alla classe figlio
             }
     }
 

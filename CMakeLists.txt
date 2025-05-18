@@ -18,4 +18,4 @@ add_library(UserInterface STATIC ${SOURCE_DIR}/UserInterface.cpp)
 
 add_executable(Project_Work_TPSIT ${SOURCE_DIR}/main.cpp)
 
-target_link_libraries(Project_Work_TPSIT Serra Impianto Time)
+target_link_libraries(Project_Work_TPSIT Automatico Manuale Adattivo Serra Impianto Time UserInterface)
