@@ -2,7 +2,5 @@
 
 int Impianto::prossimoID = 1;
 
-
-Impianto::Impianto(const std::string n) : ID(prossimoID++), Nome(n),        //Costruttore dell'impianto
-acceso(false), accensione(), ultimaAccensione(), tempoSpegni() {}
-
+//Costruttore dell'impianto
+Impianto::Impianto(const std::string& n) : ID(prossimoID++), Nome(n), acceso(false), ultimaAccensione() {}

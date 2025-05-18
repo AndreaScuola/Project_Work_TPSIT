@@ -42,6 +42,7 @@ std::string Time::GetTime() const {
     return oss.str();
 }
 
+//CAPIRE A COSA SERVE OPERATOR << PER USERINTERFACE.cpp E SISTEMARLO
 std::ostream & operator<<(std::ostream &os, const Time &obj) {
     return os
            << "hour: " << obj.hour

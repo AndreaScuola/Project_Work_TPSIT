@@ -5,18 +5,20 @@
 
 class Automatico : public Impianto {
 private:
-    Time tempoAcceso;  // totale tempo di funzionamento
+    int oreAcceso;  //Ore e minuti che l'impianto automatico aspetta prima di spegnersi
+    int minutiAcceso;
+    Time tempoAccensione;    //Ora a cui si deve accendere
+    Time tempoSpegnimento;  //Ora a cui deve essere spento
+    void OraSpegnimento(); //Calcola l'ora a cui deve essere spento
 
 public:
-    explicit Automatico(const std::string n, int oreAcceso, int minutiAcceso);
+    explicit Automatico(const std::string& n, int oreAcceso, int minutiAcceso);
+    void SetAccensione(const Time& t);
 
-    // implementazione dei metodi puri
-    std::string Accendi(const Time t) override;
-    std::string Spegni(const Time t) override;
-
-    // (opzionale) getter per tempoAcceso
-    Time GetTempoAcceso() const;
-    std::string toString() const;
+    //Implementazione dei metodi puri
+    void Accendi(const Time& t) override;
+    void Spegni(const Time& t) override;
+    std::string toString() const override;
 };
 
 
