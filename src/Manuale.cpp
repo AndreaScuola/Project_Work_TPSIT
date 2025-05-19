@@ -4,19 +4,18 @@
 
 Manuale::Manuale(const std::string& n) : Impianto(n) {}
 
-//FINIRE STAMPA
 void Manuale::SetAccensione(const Time& t) {   //Imposta l'ora a cui accendere l'impianto (quella passata)
     std::ostringstream oss;
 
     if (acceso){
         //Se è già acceso dà errore
-        oss << "Impianto manuale: " << Nome << " con ID: " << ID << " è già acceso" << std::endl;
+        oss << "Impianto manuale: " << Nome << " con ID: " << ID << " è già acceso";
         logMessage(t, oss.str(), 1);
         return;
     }
 
     tempoAccensione = t; //Imposta l'ora in cui dovrà accendersi
-    oss << "Accensione dell'impianto manuale: " << Nome << " con ID: " << ID << " impostata alle"/* <<AGGIUNGI STAMPA ORA << */ << std::endl;
+    oss << "Accensione dell'impianto manuale: " << Nome << " con ID: " << ID << " impostata alle " << tempoAccensione;
     logMessage(t, oss.str(), 0);
 }
 
@@ -31,7 +30,7 @@ void Manuale::Accendi(const Time& now) {  //Compara l'orario della serra (quello
 
         acceso = true;
         ultimaAccensione = now;
-        oss << "Impianto manuale: " << Nome << " con ID: " << ID << " è stato acceso" << std::endl;
+        oss << "Impianto manuale: " << Nome << " con ID: " << ID << " è stato acceso";
         logMessage(now, oss.str(), 0);
     }
 }
@@ -40,13 +39,13 @@ void Manuale::Spegni(const Time& now) {   //Se da comando viene spento --> Spegn
     std::ostringstream oss;
 
     if (!acceso) {  //Controlla che l'impianto non sia già spento
-        oss << "Impianto manuale: " << Nome << " con ID: " << ID << " è già spento" << std::endl;
+        oss << "Impianto manuale: " << Nome << " con ID: " << ID << " è già spento";
         logMessage(now, oss.str(), 1);
         return;
     }
 
     acceso = false;
-    oss << "Impianto manuale: " << Nome << " con ID: " << ID << " è stato spento" << std::endl;
+    oss << "Impianto manuale: " << Nome << " con ID: " << ID << " è stato spento";
     logMessage(now, oss.str(), 0);
 }
 
@@ -55,9 +54,9 @@ std::string Manuale::toString() const{
     oss << "Impianto manuale: " << Nome << ", ID: " << ID;
 
     if (acceso)
-        oss << ", stato impianto: acceso" << std::endl;
+        oss << ", stato impianto: acceso";
     else
-        oss << ", stato impianto: spento" << std::endl;
+        oss << ", stato impianto: spento";
 
     return oss.str();
 }

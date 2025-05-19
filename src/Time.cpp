@@ -9,6 +9,32 @@
 #define MIN_MINUTE 0
 #define MAX_MINUTE 59
 
+#include "Time.h"
+#include <iostream>
+
+Time::Time(std::string strOra) {    //Costruttore: a partire da una stringa crea il Time
+    if (strOra.size() == 5 && strOra[2] == ':') {
+        try {
+            hour = std::stoi(strOra.substr(0, 2));
+            minute = std::stoi(strOra.substr(3, 2));
+
+            if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
+                hour = 0;
+                minute = 0;
+                logMessage(*this, "Errore nella creazione di Time: orario non valido", 1);
+            }
+        } catch (...) {
+            hour = 0;
+            minute = 0;
+            logMessage(*this, "Errore nella creazione di Time", 1);
+        }
+    } else {
+        hour = 0;
+        minute = 0;
+        logMessage(*this, "Formato non valido, deve essere hh:mm", 1);
+    }
+}
+
 void Time::Setter(int h, int m, std::vector<Impianto*>* impianti) {
     if (h < MIN_HOUR || h > MAX_HOUR || m < MIN_MINUTE || m > MAX_MINUTE) {
         logMessage(*this, "Ora non valida", 1);
@@ -56,11 +82,6 @@ std::string Time::GetTime() const {
 }
 
 //CAPIRE A COSA SERVE OPERATOR << PER USERINTERFACE.cpp E SISTEMARLO
-std::ostream & operator<<(std::ostream &os, const Time &obj) {
-    /*
-    return os
-           << "hour: " << obj.hour
-           << " minute: " << obj.minute;
-    */
-    return os;  //COMMENTATA AL MOMENTO, MODIFICARE TUTTO L'OPERATOR <<
+std::ostream & operator<<(std::ostream &os, const Time &t) {
+    return os << t.GetTime();
 }

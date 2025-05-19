@@ -28,6 +28,7 @@ float Adattivo::randomFloat(float min, float max) { //Random
     //Inizializza una volta solo grazie allo staic
     static std::random_device rd;
     static std::mt19937 gen(rd());
+
     std::uniform_real_distribution<float> dist(min, max);
     return dist(gen);
 }
@@ -44,7 +45,7 @@ void Adattivo::Accendi(const Time& now) {   //Accende l'impianto se la temperatu
 
         //Stampo il messaggio per l'accensione
         std::ostringstream oss;
-        oss << "Impianto adattivo: " << Nome << " con ID: " << ID << " si è acceso, temperatura: " << temperatura << "°C" << std::endl;
+        oss << "Impianto adattivo: " << Nome << " con ID: " << ID << " si è acceso, temperatura: " << temperatura << "°C";
         logMessage(now, oss.str(), 0);
     }
 }
@@ -55,21 +56,19 @@ void Adattivo::Spegni(const Time& now) { //Spegne l'impianto se la temperatura s
 
         //Stampo il messaggio per lo spegnimento
         std::ostringstream oss;
-        oss << "Impianto adattivo: " << Nome << " con ID: " << ID << " si è spento, temperatura: " << temperatura << "°C" << std::endl;
+        oss << "Impianto adattivo: " << Nome << " con ID: " << ID << " si è spento, temperatura: " << temperatura << "°C";
         logMessage(now, oss.str(), 0);
     }
 }
 
-//COMPLETARE CON STAMPA DELL'ORA (forse usare operator << di Time)
 std::string Adattivo::toString() const{
     std::ostringstream oss;
     oss << "Impianto adattivo: " << Nome << ", ID: " << ID << ", temperatura: " << temperatura;
-    /*<< ", tempo accensione: " << AGGIUNGERE  << ", tempo spegnimento: " << AGGIUNGERE*/;
 
     if (acceso)
-        oss << "°C, stato impianto: acceso" << std::endl;
+        oss << "°C, stato impianto: acceso";
     else
-        oss << "°C, stato impianto: spento" << std::endl;
+        oss << "°C, stato impianto: spento";
 
     return oss.str();
 }

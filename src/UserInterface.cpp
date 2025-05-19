@@ -13,8 +13,7 @@ void logMessage(const Time &time, const std::string &message, const int &errorLe
         std::cerr << "[" << time << "]\t" << message << std::endl;
 }
 
-/*
-COMMENTATA SOLO MOMENTANEAMENTE
+
 std::vector<std::string> commandParser(const std::string &command) {
     std::vector<std::string> tokens;
     std::istringstream ss(command);
@@ -58,8 +57,8 @@ std::vector<std::string> commandParser(const std::string &command) {
 }
 
 
-void processCommand(const std::string &command) {
-    logMessage(now, "L'orario attuale è " + now.displayTime());
+void processCommand(const std::string &command, Time &now) {
+    logMessage(now, "L'orario attuale è " + now.GetTime());
     std::vector<std::string> tokens = commandParser(command);
 
     if (tokens.empty()) {
@@ -138,4 +137,3 @@ void processCommand(const std::string &command) {
         throw std::invalid_argument("Errore: comando '" + action + "' non riconosciuto.");
     }
 }
-*/
