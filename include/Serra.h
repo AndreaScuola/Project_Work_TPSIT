@@ -19,7 +19,8 @@ public:
     void AggiungiImpianto(Impianto* impianto);
     void RimuoviImpianto(int ID);
     std::string StampaStato();
-    void SpegniImpiantoManuale();
+    void SpegniImpiantoManuale(int ID);
+    std::vector<Impianto*> getImpianti();
 };
 
 #endif //SERRA_H

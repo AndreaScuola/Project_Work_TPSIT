@@ -85,3 +85,9 @@ std::string Time::GetTime() const {
 std::ostream & operator<<(std::ostream &os, const Time &t) {
     return os << t.GetTime();
 }
+int Time::GetHour() const {
+    return hour;
+}
+int Time::GetMinute() const {
+    return minute;
+}

@@ -21,6 +21,8 @@ public:
     Time operator++(int); //MODIFICARE
     bool operator==(const Time &other) const;   //Parametri da confrontare, const perché non vanno modificati
     std::string GetTime() const;
+    int GetHour() const;
+    int GetMinute() const;
 };
 
 std::ostream & operator<<(std::ostream &os, const Time &t);

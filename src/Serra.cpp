@@ -98,9 +98,22 @@ std::string Serra::StampaStato() {
 }
 
 //MODIFICARE
-void Serra::SpegniImpiantoManuale() {
+void Serra::SpegniImpiantoManuale(int ID) {
     //CODICE DA AGGIUNGERE
     std::ostringstream oss;
+    for (auto it = Impianti.begin(); it != Impianti.end(); ++it) {
+        if ((*it)->GetID() == ID&&typeid(*it)==typeid(Manuale)) {
 
+            (*it)->Spegni(now);
+            std::cout << "Impianto rimosso con successo" << std::endl;
+            return;
+        }else if ((*it)->GetID() == ID&&typeid(*it)!=typeid(Manuale))
+            std::cout << "Errore nella rimozione dell'impianto" << std::endl;
+        return;
+    }
 
+}
+
+std::vector<Impianto*> Serra::getImpianti() {
+    return Impianti;
 }

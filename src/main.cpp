@@ -3,9 +3,25 @@
 #include "Automatico.h"
 #include "Manuale.h"
 #include "Adattivo.h"
+#include "UserInterface.h"
 
 int main() {
     Serra serra;
+    bool exit = true;
+    std::string command;
+    char c;
+
+    do {
+        std::cout<<"Write a command"<<std::endl;
+        std::cin>>command;
+        //processCommand(command);
+
+        std::cout<<"Do you want to leave?"<<std::endl;
+        std::cin>>c;
+        if (c=='y'||c=='Y')
+            exit=false;
+
+    }while (exit);
 
     Automatico* automatico = new Automatico("Impianto", 1, 20);
     automatico->SetAccensione(Time(1, 2));
