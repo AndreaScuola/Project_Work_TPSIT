@@ -59,8 +59,9 @@ std::vector<std::string> commandParser(const std::string &command) {
 }
 
 
-void processCommand(const std::string &command, Time &now) {
-    logMessage(now, "L'orario attuale è " + now.GetTime());
+void processCommand(const std::string &command) {
+    //getTime prende l'orario della serra GetTime prender l'orario formattato bene per la stampa
+    logMessage(serra.getTime(), "L'orario attuale è " + serra.getTime().GetTime());
     std::vector<std::string> tokens = commandParser(command);
 
     if (tokens.empty()) {
@@ -92,28 +93,33 @@ void processCommand(const std::string &command, Time &now) {
 
             if (operation == "on") {
                 //metodo per accendere il dispositivo {deviceName};
-
+                /*for (auto it = serra.getImpianti().begin(); it != serra.getImpianti().end(); ++it) {
+                    if ((*it)->GetID() == std::stoi(deviceName)) {
+                        //Serve un metodo per accendere e basta
+                        (*it)->Accendi();
+                    }
+                }*/
 
             } else if (operation == "off") {
                 //metodo per spegnere il dispositivo {deviceName};
-                //serra.SpegniImpiantoManuale(tokens[3]);
+                serra.SpegniImpiantoManuale(std::stoi(deviceName));
             } else {
                 Time start{operation};
                 if (tokens.size() == 4) {
                     Time stop{tokens[3]};
                     //metodo per settare il timer {start} e {stop} per il dispositivo {deviceName};
-                   /* for (auto it = serra.getImpianti().begin(); it != serra.getImpianti().end(); ++it) {
-                        if ((*it)->GetID() == tokens[4]) {
+                    for (auto it = serra.getImpianti().begin(); it != serra.getImpianti().end(); ++it) {
+                        if ((*it)->GetID() == std::stoi(deviceName)) {
                             (*it)->Spegni(stop);
                         }
-                    }*/
+                    }
                 } else {
                     //metodo per settare il timer {start} per il dispositivo {deviceName};
-                    /*for (auto it = serra.getImpianti().begin(); it != serra.getImpianti().end(); ++it) {
-                        if ((*it)->GetID() == tokens[4]) {
+                    for (auto it = serra.getImpianti().begin(); it != serra.getImpianti().end(); ++it) {
+                        if ((*it)->GetID() == std::stoi(deviceName)) {
                             (*it)->Accendi(start);
                         }
-                    }*/
+                    }
                 }
 
             }
@@ -127,14 +133,15 @@ void processCommand(const std::string &command, Time &now) {
     } else if (action == "show") {
         if (tokens.size() == 1) {
         //metodo per mostrare tutti impianti
+            serra.StampaStato();
         } else if (tokens.size() == 2) {
             //metodo per mostrare impianto specifico
-            /*for (auto it = serra.getImpianti().begin(); it != serra.getImpianti().end(); ++it) {
-                       if ((*it)->GetID() == tokens[4]) {
+            for (auto it = serra.getImpianti().begin(); it != serra.getImpianti().end(); ++it) {
+                       if ((*it)->GetID() == std::stoi(tokens[1])) {
                             //In base a come viene gesito il metodo toString da chi lo farà
                            (*it)->toString();
                        }
-             }*/
+             }
         } else {
             throw std::invalid_argument("Errore: comando 'show' non valido. Usa: show oppure show ${DEVICENAME}");
         }

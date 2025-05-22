@@ -21,6 +21,7 @@ public:
     std::string StampaStato();
     void SpegniImpiantoManuale(int ID);
     std::vector<Impianto*> getImpianti();
+    Time getTime();
 };
 
 #endif //SERRA_H

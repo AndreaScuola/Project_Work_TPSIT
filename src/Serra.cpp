@@ -117,3 +117,7 @@ void Serra::SpegniImpiantoManuale(int ID) {
 std::vector<Impianto*> Serra::getImpianti() {
     return Impianti;
 }
+
+Time Serra::getTime() {
+    return now;
+}
