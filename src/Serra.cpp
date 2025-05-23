@@ -25,7 +25,7 @@ void Serra::Menu() {    //CODICE PROVVISORIO
             case 1: {
                 // Esempio: aggiunge un impianto fittizio (da sostituire con factory o input reale)
                 std::cout << "Aggiunta impianto dummy...\n";
-                Impianto* imp = new Automatico("DummyImpianto", 1, 20);  // Assumendo costruttore valido
+                Impianto* imp = new Automatico("DummyImpianto");  // Assumendo costruttore valido
                 AggiungiImpianto(imp);
                 break;
             }
@@ -46,7 +46,7 @@ void Serra::Menu() {    //CODICE PROVVISORIO
                 break;
             }
             case 4: {
-                std::cout << StampaStato();
+                StampaStato();
                 break;
             }
             case 5:
@@ -72,7 +72,7 @@ void Serra::AggiungiImpianto(Impianto* impianto) {
 
 
 void Serra::RimuoviImpianto(int ID) {
-    for (auto it = Impianti.begin(); it != Impianti.end(); ++it) {
+    for (auto it = Impianti.begin(); it != Impianti.end(); it++) {
         if ((*it)->GetID() == ID) {
             Impianti.erase(it);
             std::cout << "Impianto rimosso con successo" << std::endl;
@@ -82,7 +82,7 @@ void Serra::RimuoviImpianto(int ID) {
     std::cout << "ERRORE! Impianto non trovato" << std::endl;
 }
 
-std::string Serra::StampaStato() {
+void Serra::StampaStato() {
     std::ostringstream oss;
 
     if (Impianti.empty()) {
@@ -94,24 +94,44 @@ std::string Serra::StampaStato() {
         }
     }
 
-    return oss.str();
+    logMessage(now, oss.str(), 0);
 }
 
-//MODIFICARE
-void Serra::SpegniImpiantoManuale(int ID) {
-    //CODICE DA AGGIUNGERE
+void Serra::StampaStato(int ID) {
     std::ostringstream oss;
-    for (auto it = Impianti.begin(); it != Impianti.end(); ++it) {
-        if ((*it)->GetID() == ID&&typeid(*it)==typeid(Manuale)) {
-
-            (*it)->Spegni(now);
-            std::cout << "Impianto rimosso con successo" << std::endl;
+    for (auto it = Impianti.begin(); it != Impianti.end(); it++) {
+        if ((*it)->GetID() == ID) {   //Se l'ID è quello cercato  --> Stampa
+            logMessage(now, (*it)->toString(), 0);
             return;
-        }else if ((*it)->GetID() == ID&&typeid(*it)!=typeid(Manuale))
-            std::cout << "Errore nella rimozione dell'impianto" << std::endl;
-        return;
+        }
     }
+    //Se non trova l'impianto
+    logMessage(now, "Errore nella stampa dell'impianto", 1);
+}
 
+void Serra::AccendiImpiantoManuale(int ID) {    //Accende sul momento l'impianto manuale scelto
+    for (auto it = Impianti.begin(); it != Impianti.end(); it++) {
+        if ((*it)->GetID() == ID) {   //Se l'ID è quello cercato e l'impianto è manuale
+            if (auto m = dynamic_cast<Manuale*>(*it)) {     //Prova a fare il cast in una classe Manuale
+                m->AccendiAdesso(now);  //Accende l'impianto da comando
+                return;
+            }
+        }
+    }
+    //Se non trova l'impianto
+    logMessage(now, "Errore nell'accensione' dell'impianto", 1);
+}
+
+void Serra::SpegniImpiantoManuale(int ID) {
+    std::ostringstream oss;
+    for (auto it = Impianti.begin(); it != Impianti.end(); it++) {
+        if ((*it)->GetID() == ID && typeid(*it) == typeid(Manuale)) {   //Se l'ID è quello cercato e l'impianto è manuale
+            (*it)->Spegni(now);
+            return;
+        }
+    }
+    //Se non trova l'impianto
+    logMessage(now, "Errore nello spegnimento dell'impianto", 1);
 }
 
 std::vector<Impianto*> Serra::getImpianti() {
@@ -120,4 +140,82 @@ std::vector<Impianto*> Serra::getImpianti() {
 
 Time Serra::getTime() {
     return now;
+}
+
+void Serra::SetTimer(int ID, Time start) {  //Accensione impianto Manuale
+    for (auto imp : Impianti) {
+        if (imp->GetID() == ID) {
+            if (auto m = dynamic_cast<Manuale*>(imp)) {     //Prova a fare il cast in una classe Manuale
+                logMessage(now, m->SetAccensione(start), 0);
+                return;
+            }
+
+            //L'impianto esiste ma non è Manuale
+            logMessage(now, "Errore: l'impianto non e' di tipo manuale", 1);
+            return;
+        }
+    }
+    //ID non trovato
+    logMessage(now, "Errore: nessun impianto con ID " + std::to_string(ID), 1);
+}
+
+void Serra::SetTimer(int ID, Time start, Time stop) {   //Accensione impianto Automatico
+    for (auto imp : Impianti) {
+        if (imp->GetID() == ID) {
+            if (auto a = dynamic_cast<Automatico*>(imp)) {     //Prova a fare il cast in una classe Automatico
+                logMessage(now, a->SetAccensione(start, stop), 0);
+                return;
+            }
+
+            //L'impianto esiste ma non è Automatico
+            logMessage(now, "Errore: l'impianto non e' di tipo automatico", 1);
+            return;
+        }
+    }
+    //ID non trovato
+    logMessage(now, "Errore: nessun impianto con ID " + std::to_string(ID), 1);
+}
+
+//RESET TIMER
+
+void Serra::RemoveTimer(int ID) {       //Setta a 00:00 accensione e spegnimento dell'impianto cercato
+    for (auto imp : Impianti) {
+        if (imp->GetID() == ID) {
+            if (auto m = dynamic_cast<Manuale*>(imp)) {     //Prova a fare il cast in una classe Automatico
+                m->SetAccensione(Time(0, 0));
+                return;
+            }
+
+            else if (auto a = dynamic_cast<Automatico*>(imp)) {    //Prova a fare il cast in una classe Automatico
+                a->SetAccensione(Time(0, 0), Time(0, 0));
+                return;
+            }
+        }
+    }
+
+    logMessage(now, "Errore, impianto da resettare non trovato", 1);
+}
+
+void Serra::ResetTime() {   //Imposta il tempo a 00:00
+    now.ResetTime();
+    logMessage(now, "Timer della serra resettato", 0);
+}
+
+
+void Serra::ResetTimers() {     //Setta a 00:00 accensione e spegnimento di tutti gli impianti
+    for (auto imp : Impianti) {
+        if (auto m = dynamic_cast<Manuale*>(imp))     //Prova a fare il cast in una classe Automatico
+            m->SetAccensione(Time(0, 0));
+
+        else if (auto a = dynamic_cast<Automatico*>(imp))     //Prova a fare il cast in una classe Automatico
+            a->SetAccensione(Time(0, 0), Time(0, 0));
+    }
+
+    logMessage(now, "Tutti i timer degli impianti sono stati resettati", 0);
+}
+
+void Serra::ResetAll() {    //Chiama ReserTime e ResetTimers
+    ResetTimers();
+    ResetTime();
+    logMessage(now, "Tutti i timer sono stati resettati", 0);
 }

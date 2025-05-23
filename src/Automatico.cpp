@@ -2,28 +2,26 @@
 #include <sstream>
 #include "UserInterface.h" //Per logMessage
 
-Automatico::Automatico(const std::string& n, int oreAcceso, int minutiAcceso) : Impianto(n), oreAcceso(oreAcceso), minutiAcceso(minutiAcceso) {}
+Automatico::Automatico(const std::string& n) : Impianto(n) {}
 
-void Automatico::SetAccensione(const Time& t) {   //Imposta l'ora a cui accendere l'impianto (quella passata) e calcola l'ora di spegnimento
+std::string Automatico::SetAccensione(const Time& oraAccensione, const Time& oraSpegnimento) {   //Imposta l'ora a cui accendere e spegnere l'impianto
     std::ostringstream oss;
 
     if (acceso){
         //Se è già acceso dà errore
         oss << "Impianto automatico: " << Nome << " con ID: " << ID << " e' già acceso";
-        logMessage(t, oss.str(), 1);
-        return;
+        return oss.str();
     }
 
-    tempoAccensione = t; //Imposta l'ora in cui dovrà accendersi
-    //Calcola l'ora a cui dovrà spegnersi
-    tempoSpegnimento = t;
-    OraSpegnimento();   //Calcolo l'ora a cui si deve spegnere a partire da quella di accensione
+    //Imposta l'ora in cui dovrà accendersi e spegnersi
+    tempoAccensione = oraAccensione;
+    tempoSpegnimento = oraSpegnimento;
 
-    oss << "Accensione dell'impianto automatico: " << Nome << " con ID: " << ID << " impostata alle " << t;
-    logMessage(t, oss.str(), 0);
+    oss << "Accensione dell'impianto automatico: " << Nome << " con ID: " << ID << " impostata alle " << oraAccensione;
+    return oss.str();
 }
 
-void Automatico::Avanza(const Time& now) {
+void Automatico::Avanza(const Time& now) {  //Ad ogni minuto controlla se deve accendere/spegnere l'impianto
     Accendi(now);
     Spegni(now);
 }
@@ -37,15 +35,6 @@ void Automatico::Accendi(const Time& now) {   //Accende l'impianto se è l'ora d
         oss << "Impianto automatico: " << Nome << " con ID: " << ID << " e' stato acceso e continuera' fino alle [" << tempoSpegnimento << "]";
         logMessage(now, oss.str(), 0);
     }
-}
-
-void Automatico::OraSpegnimento() {   //Calcola a partire dai parametri passati l'ora a cui l'impianto deve spegnersi
-    for (int i = 0; i < minutiAcceso; i++)
-        tempoSpegnimento++;
-
-    for (int i = 0; i < oreAcceso; i++) //Aggiunge minuto per minuto un'ora per evitare eccezioni
-        for (int j = 0; j < 60; j++)
-            tempoSpegnimento++;
 }
 
 void Automatico::Spegni(const Time& now) {    //Se è arrivata l'ora di spegnersi si spegne, altrimenti non stampa nulla

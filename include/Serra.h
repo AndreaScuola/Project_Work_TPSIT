@@ -14,14 +14,23 @@ private:
 
 public:
     Serra() : now(0, 0), Impianti{} {} //Costruttore
-    void Menu();
+    void Menu();    //DA TOGLIERE
     void AggiornaOrario(int hour,int minutes);
     void AggiungiImpianto(Impianto* impianto);
     void RimuoviImpianto(int ID);
-    std::string StampaStato();
+    void StampaStato();
+    void StampaStato(int ID);
+    void AccendiImpiantoManuale(int ID);
     void SpegniImpiantoManuale(int ID);
     std::vector<Impianto*> getImpianti();
     Time getTime();
+    void SetTimer(int ID, Time start);
+    void SetTimer(int ID, Time start, Time stop);
+
+    void RemoveTimer(int ID);   //Resetta il timer dell'impianto scelto
+    void ResetTime();   //Imposta il tempo a 00:00
+    void ResetTimers();    //Mette le accensioni a 00:00 (e anche lo spegnimento a 00:00 se è Automatico)
+    void ResetAll();    //Chiama ReserTime e ResetTimers
 };
 
 #endif //SERRA_H

@@ -21,6 +21,7 @@ public:
     Time operator++(int); //MODIFICARE
     bool operator==(const Time &other) const;   //Parametri da confrontare, const perché non vanno modificati
     std::string GetTime() const;
+    void ResetTime(){hour = 0; minute = 0;};
     int GetHour() const;
     int GetMinute() const;
 };

@@ -7,17 +7,37 @@
 #include "UserInterface.cpp"
 int main() {
 
-    bool exit = true;
+    bool continuare = true;
     std::string command;
     char c;
-    Automatico* automatico = new Automatico("Impianto", 1, 20);
-    automatico->SetAccensione(Time(1, 2));
-    Manuale* manuale = new Manuale("Impianto1");
-    manuale->SetAccensione(Time(1, 2));
+    Automatico* automatico = new Automatico("Impianto1");
+    Manuale* manuale = new Manuale("Impianto2");
+    Adattivo* adattivo = new Adattivo("Impianto3");
+
+    serra.AggiungiImpianto(automatico);
+    serra.AggiungiImpianto(manuale);
+    serra.AggiungiImpianto(adattivo);
+
+    std::cout << "COMANDI ESEGUIBILI: "
+    "\n-set ${ID} on   //Solo per Manuali"
+    "\n-set ${ID} off   //Solo per Manuali"
+    "\n-set ${ID} ${START}   //Solo per Manuali"
+    "\n-set ${ID} ${START} ${STOP}   //Solo per Automatici"
+    "\n-rm ${ID}   //Setta i timer a [00:00]"
+    "\n-show   //Stampa i dati di tutto"
+    "\n-show {ID}   //Stampa i dati di un impianto"
+    "\n-set time ${TIME}   //Imposta l'ora attuale a quella scelta"
+    "\n-reset time   //Resetta l'ora della serra a [00:00]"
+    "\n-reset timers   //Resetta i timer degli impianti a [00:00]"
+    "\n-reset timers   //Resetta tutti i timer \n\n";
+
+
+    //MODIFICARE I TIMER E I LORO RESET
 
     do {
-        std::cout<<"Write a command"<<std::endl;
+        std::cout<<"Scrivi un comando: ";
         std::cin>>command;
+
         try {
             processCommand(command);
         }
@@ -26,19 +46,12 @@ int main() {
         }
 
 
-        std::cout<<"Do you want to leave?"<<std::endl;
+        std::cout<<"Vuoi uscire? (Y/y):";
         std::cin>>c;
-        if (c=='y'||c=='Y')
-            exit=false;
+        if (c == 'y' || c == 'Y')
+            continuare = false;
 
-    }while (exit);
-
-    delete manuale;
-    delete automatico;
-    serra.AggiungiImpianto(automatico);  // <<< questa riga è fondamentale
-
-    serra.AggiornaOrario(2, 0);
-    serra.AggiornaOrario(4, 0);
+    }while (continuare);
 
     return 0;
 }

@@ -64,7 +64,6 @@ Time Time::operator++(int) {  //MODIFICARE
 
         if (hour > MAX_HOUR)    //Controlla che h non sia >= 24
             hour = 0;
-            //FORSE INTERROMPERE ESECUZIONE  --> Vedere come gestire le 24:00
     }
 
     return *this;
@@ -81,7 +80,6 @@ std::string Time::GetTime() const {
     return hh + ":" + mm;
 }
 
-//CAPIRE A COSA SERVE OPERATOR << PER USERINTERFACE.cpp E SISTEMARLO
 std::ostream & operator<<(std::ostream &os, const Time &t) {
     return os << t.GetTime();
 }

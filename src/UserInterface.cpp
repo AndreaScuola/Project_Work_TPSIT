@@ -60,112 +60,95 @@ std::vector<std::string> commandParser(const std::string &command) {
 
 
 void processCommand(const std::string &command) {
-    //getTime prende l'orario della serra GetTime prender l'orario formattato bene per la stampa
-    logMessage(serra.getTime(), "L'orario attuale è " + serra.getTime().GetTime());
-    std::vector<std::string> tokens = commandParser(command);
+    //Log sull'orario corrente
+    logMessage(serra.getTime(), "L'orario attuale e' " + serra.getTime().GetTime(), 0);
 
-    if (tokens.empty()) {
+    auto tokens = commandParser(command);
+    if (tokens.empty())
         throw std::invalid_argument("Errore: comando vuoto.");
-    }
 
     const std::string &action = tokens[0];
 
+    //----------- SET -----------
     if (action == "set") {
-        if (tokens.size() < 2) {
+        if (tokens.size() < 2)
             throw std::invalid_argument("Errore: comando 'set' incompleto.");
-        }
+        const std::string &target = tokens[1];
 
-        const std::string &deviceName = tokens[1];
-
-        if (deviceName == "time") {
-            if (tokens.size() != 3) {
+        //set time HH:MM
+        if (target == "time") {
+            if (tokens.size() != 3)
                 throw std::invalid_argument("Errore: formato per 'set time' non valido. Usa: set time HH:MM");
-            }
-            Time time{tokens[2]};
-            //Metodo per settare il timer
-            serra.AggiornaOrario(time.GetHour() ,time.GetMinute());
-        } else {
-            if (tokens.size() < 3) {
-                throw std::invalid_argument("Errore: comando 'set' incompleto per dispositivo.");
-            }
-
-            const std::string &operation = tokens[2];
-
-            if (operation == "on") {
-                //metodo per accendere il dispositivo {deviceName};
-                /*for (auto it = serra.getImpianti().begin(); it != serra.getImpianti().end(); ++it) {
-                    if ((*it)->GetID() == std::stoi(deviceName)) {
-                        //Serve un metodo per accendere e basta
-                        (*it)->Accendi();
-                    }
-                }*/
-
-            } else if (operation == "off") {
-                //metodo per spegnere il dispositivo {deviceName};
-                serra.SpegniImpiantoManuale(std::stoi(deviceName));
-            } else {
-                Time start{operation};
-                if (tokens.size() == 4) {
-                    Time stop{tokens[3]};
-                    //metodo per settare il timer {start} e {stop} per il dispositivo {deviceName};
-                    for (auto it = serra.getImpianti().begin(); it != serra.getImpianti().end(); ++it) {
-                        if ((*it)->GetID() == std::stoi(deviceName)) {
-                            (*it)->Spegni(stop);
-                        }
-                    }
-                } else {
-                    //metodo per settare il timer {start} per il dispositivo {deviceName};
-                    for (auto it = serra.getImpianti().begin(); it != serra.getImpianti().end(); ++it) {
-                        if ((*it)->GetID() == std::stoi(deviceName)) {
-                            (*it)->Accendi(start);
-                        }
-                    }
-                }
-
-            }
+            Time t(tokens[2]);
+            serra.AggiornaOrario(t.GetHour(), t.GetMinute());
         }
-
-    } else if (action == "rm") {
-        if (tokens.size() != 2) {
-            throw std::invalid_argument("Errore: comando 'rm' non valido. Usa: rm ${DEVICENAME}");
+        //set ID on  --> Per impianti manuali
+        else if (tokens.size() == 3 && tokens[2] == "on") {
+            int id = std::stoi(target);
+            serra.AccendiImpiantoManuale(id);
         }
-        //metodo per rimuovere il timer
-    } else if (action == "show") {
+        //set ID off  --> Per impianti manuali
+        else if (tokens.size() == 3 && tokens[2] == "off") {
+            int id = std::stoi(target);
+            serra.SpegniImpiantoManuale(id);
+        }
+        //set ID START STOP --> Per impianti automatici
+        else if (tokens.size() == 4) {
+            int id = std::stoi(target);
+            Time start(tokens[2]);
+            Time stop(tokens[3]);
+            serra.SetTimer(id, start, stop);
+        }
+        //set ID START --> Per impianti manuali
+        else if (tokens.size() == 3) {
+            int id = std::stoi(target);
+            Time start(tokens[2]);
+            serra.SetTimer(id, start);
+        }
+        else {
+            throw std::invalid_argument("Errore: formato comando 'set' non riconosciuto.");
+        }
+    }
+
+    //----------- RM -----------   --> Reset del timer di un impianto
+    else if (action == "rm") {
+        if (tokens.size() != 2)
+            throw std::invalid_argument("Errore: comando 'rm' non valido. Usa: rm ${ID}");
+        int id = std::stoi(tokens[1]);
+        serra.RemoveTimer(id);
+    }
+
+    //----------- SHOW -----------
+    else if (action == "show") {
         if (tokens.size() == 1) {
-        //metodo per mostrare tutti impianti
+            // Mostra tutti gli impianti con stato e consumo
             serra.StampaStato();
         } else if (tokens.size() == 2) {
-            //metodo per mostrare impianto specifico
-            for (auto it = serra.getImpianti().begin(); it != serra.getImpianti().end(); ++it) {
-                       if ((*it)->GetID() == std::stoi(tokens[1])) {
-                            //In base a come viene gesito il metodo toString da chi lo farà
-                           (*it)->toString();
-                       }
-             }
+            int id = std::stoi(tokens[1]);
+            serra.StampaStato(id);
         } else {
-            throw std::invalid_argument("Errore: comando 'show' non valido. Usa: show oppure show ${DEVICENAME}");
+            throw std::invalid_argument("Errore: comando 'show' non valido. Usa: show oppure show ${ID}");
         }
+    }
 
-    } else if (action == "reset") {
-        if (tokens.size() != 2) {
+    //----------- RESET -----------
+    else if (action == "reset") {
+        if (tokens.size() != 2)
             throw std::invalid_argument("Errore: comando 'reset' non valido.");
-        }
-
-        const std::string &resetType = tokens[1];
-        if (resetType == "time") {
-            //metodo per resettare il tempo
-            //manca il metodo per resettare il tempo a 0
-        } else if (resetType == "timers") {
-            //metodo per resettare i timer
-            //stessa cosa
-        } else if (resetType == "all") {
-            //metodo per resettare tempo e timer
-            //stessa cosa
+        const std::string &opt = tokens[1];
+        if (opt == "time") {
+            serra.ResetTime();
+        } else if (opt == "timers") {
+            serra.ResetTimers();
+        } else if (opt == "all") {
+            serra.ResetAll();
         } else {
             throw std::invalid_argument(
-                    "Errore: opzione 'reset' non valida. Usa: reset time | reset timers | reset all");
+                "Errore: opzione 'reset' non valida. Usa: reset time | reset timers | reset all");
         }
-    } else {
+    }
+
+    else {
         throw std::invalid_argument("Errore: comando '" + action + "' non riconosciuto.");
     }
 }

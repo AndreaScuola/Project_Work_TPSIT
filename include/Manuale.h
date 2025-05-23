@@ -9,7 +9,8 @@ private:
 
 public:
     explicit Manuale(const std::string& n);
-    void SetAccensione(const Time& t);
+    void AccendiAdesso(const Time& t);
+    std::string SetAccensione(const Time& t);
 
     //Implementazione dei metodi puri
     void Avanza(const Time& now) override;  //In manuale la gestione è richiamare Accendi
