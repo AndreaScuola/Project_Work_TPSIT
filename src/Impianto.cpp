@@ -2,6 +2,7 @@
 #include "UserInterface.h" //Per logMessage
 #include "Time.h"
 
+
 int Impianto::prossimoID = 1;
 
 //Costruttore dell'impianto
