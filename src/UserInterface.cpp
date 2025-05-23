@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream> // per scrivere nel file
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -13,7 +14,12 @@ void logMessage(const Time &time, const std::string &message, const int &errorLe
         std::cout << "[" << time << "]\t" << message << std::endl;
     else if (errorLevel == 1)
         std::cerr << "[" << time << "]\t" << message << std::endl;
+
+    std::ofstream logFile("log.txt", std::ios::app);
+    if (logFile)
+        logFile << "[" << time << "]\t" << message << std::endl;
 }
+
 
 Serra serra;
 std::vector<std::string> commandParser(const std::string &command) {
