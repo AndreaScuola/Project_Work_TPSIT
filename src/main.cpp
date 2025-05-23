@@ -9,7 +9,7 @@ int main() {
 
     bool continuare = true;
     std::string command;
-    char c;
+    std::string c;
     Automatico* automatico = new Automatico("Impianto1");
     Manuale* manuale = new Manuale("Impianto2");
     Adattivo* adattivo = new Adattivo("Impianto3");
@@ -36,7 +36,7 @@ int main() {
 
     do {
         std::cout<<"Scrivi un comando: ";
-        std::cin>>command;
+        std::getline(std::cin,command);
 
         try {
             processCommand(command);
@@ -46,9 +46,10 @@ int main() {
         }
 
 
-        std::cout<<"Vuoi uscire? (Y/y):";
-        std::cin>>c;
-        if (c == 'y' || c == 'Y')
+        std::cout<<"\nVuoi uscire? (Y/y):";
+        std::getline(std::cin,c);
+
+        if (c == "y" || c == "Y")
             continuare = false;
 
     }while (continuare);
