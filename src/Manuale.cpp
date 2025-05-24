@@ -5,9 +5,17 @@
 Manuale::Manuale(const std::string& n) : Impianto(n) {}
 
 std::string Manuale::AccendiAdesso(const Time& now) {  //Accende l'impianto
+    std::ostringstream oss;
+
+    if (acceso) {
+        oss << "L'impianto manuale con ID: '"<< ID << "' e' gia' acceso";
+        return oss.str();
+    }
+
     acceso = true;
     ultimaAccensione = now;
-    return "Impianto manuale acceso con successo";
+    oss << "L'impianto manuale con ID: '"<< ID << "' e' stato acceso con successo";
+    return oss.str();
 }
 
 std::string Manuale::SetAccensione(const Time& t) {   //Imposta l'ora a cui accendere l'impianto (quella passata)
@@ -15,7 +23,7 @@ std::string Manuale::SetAccensione(const Time& t) {   //Imposta l'ora a cui acce
 
     if (acceso){
         //Se è già acceso dà errore
-        oss << "Impianto manuale: '" << Nome << "' , ID: '" << ID << "' e' già acceso";
+        oss << "Impianto manuale: '" << Nome << "' , ID: '" << ID << "' e' gia' acceso";
         return oss.str();
     }
 
@@ -31,6 +39,12 @@ void Manuale::Avanza(const Time &now) { //Nella classe manuale ogni minuto bisog
 void Manuale::Accendi(const Time& now) {  //Compara l'orario della serra (quello passato) e controlla se accendere l'impianto
     if (tempoAccensione == now) {
         std::ostringstream oss;
+
+        if (acceso) {
+            oss << "L'impianto manuale con ID: '" << ID << "' e' gia' acceso";
+            logMessage(now, oss.str(), 1);
+            return;
+        }
 
         acceso = true;
         ultimaAccensione = now;

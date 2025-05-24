@@ -7,20 +7,22 @@
 #include "UserInterface.h"
 
 extern Serra serra;         //dichiarato in UserInterface.cpp
-bool processCommand(const std::string &command);
 
 int main() {
+
     serra.AggiungiImpianto(new Automatico("Impianto1"));
     serra.AggiungiImpianto(new Manuale("Impianto2"));
     serra.AggiungiImpianto(new Adattivo("Impianto3"));
 
+
     std::string command;
+    std::cout << "Scrivi 'help' per la lista dei comandi eseguibili" << std::endl;
     while (true) {
         std::cout << "Scrivi un comando: ";
         std::getline(std::cin, command);
 
         try {
-            // se processCommand ritorna false => esci
+            //processCommand di userInterface --> return false se si digita 'exit' e chiude il programma
             if (!processCommand(command)) {
                 std::cout << "Chiusura del programma.\n";
                 break;
@@ -30,6 +32,6 @@ int main() {
             std::cerr << e.what() << std::endl;
         }
     }
-    //Dovevo cambiare qualcosa ciao endriu forza giuve SIUUUUUUU
+
     return 0;
 }

@@ -49,6 +49,7 @@ void Serra::AggiungiImpianto(Impianto* impianto) {
         return;
 
     Impianti.push_back(impianto);
+    logMessage(now, "Impianto aggiunto con successo", 0);
 }
 
 
