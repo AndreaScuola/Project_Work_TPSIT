@@ -9,7 +9,7 @@ std::string Automatico::SetAccensione(const Time& oraAccensione, const Time& ora
 
     if (acceso){
         //Se è già acceso dà errore
-        oss << "Impianto automatico: " << Nome << " con ID: " << ID << " e' già acceso";
+        oss << "Impianto automatico: '" << Nome << "', ID: '" << ID << "' e' già acceso";
         return oss.str();
     }
 
@@ -17,7 +17,7 @@ std::string Automatico::SetAccensione(const Time& oraAccensione, const Time& ora
     tempoAccensione = oraAccensione;
     tempoSpegnimento = oraSpegnimento;
 
-    oss << "Accensione dell'impianto automatico: " << Nome << " con ID: " << ID << " impostata alle " << oraAccensione;
+    oss << "Accensione dell'impianto automatico: '" << Nome << "', ID: '" << ID << "' impostata alle " << oraAccensione;
     return oss.str();
 }
 
@@ -32,7 +32,7 @@ void Automatico::Accendi(const Time& now) {   //Accende l'impianto se è l'ora d
 
         acceso = true;
         ultimaAccensione = now;
-        oss << "Impianto automatico: " << Nome << " con ID: " << ID << " e' stato acceso e continuera' fino alle [" << tempoSpegnimento << "]";
+        oss << "Impianto automatico: '" << Nome << "', ID: '" << ID << "' e' stato acceso e continuera' fino alle [" << tempoSpegnimento << "]";
         logMessage(now, oss.str(), 0);
     }
 }
@@ -42,26 +42,26 @@ void Automatico::Spegni(const Time& now) {    //Se è arrivata l'ora di spegners
         std::ostringstream oss;
 
         if (!acceso) {  //Controlla che l'impianto non sia già spento
-            oss << "Impianto automatico: " << Nome << " con ID: " << ID << " e' già spento";
+            oss << "Impianto automatico: '" << Nome << "', ID: '" << ID << "' e' già spento";
             logMessage(now, oss.str(), 1);
             return;
         }
 
         acceso = false;
-        oss << "Impianto automatico: " << Nome << " con ID: " << ID << " e' stato spento";
+        oss << "Impianto automatico: '" << Nome << "' con ID: '" << ID << "' e' stato spento";
         logMessage(now, oss.str(), 0);
     }
 }
 
 std::string Automatico::toString() const{
     std::ostringstream oss;
-    oss << "Impianto automatico: " << Nome << ", ID: " << ID
-    << ", tempo accensione: " << tempoAccensione  << ", tempo spegnimento: " << tempoSpegnimento;
+    oss << "Impianto automatico: '" << Nome << "', ID: '" << ID
+    << "', tempo accensione: " << tempoAccensione  << ", tempo spegnimento: " << tempoSpegnimento;
 
     if (acceso)
-        oss << ", stato impianto: acceso";
+        oss << ", acceso" << std::endl;
     else
-        oss << ", stato impianto: spento";
+        oss << ", spento" << std::endl;
 
     return oss.str();
 }

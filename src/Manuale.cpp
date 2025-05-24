@@ -4,11 +4,10 @@
 
 Manuale::Manuale(const std::string& n) : Impianto(n) {}
 
-void Manuale::AccendiAdesso(const Time& now) {  //Accende l'impianto
-    std::ostringstream oss;
-
+std::string Manuale::AccendiAdesso(const Time& now) {  //Accende l'impianto
     acceso = true;
     ultimaAccensione = now;
+    return "Impianto manuale acceso con successo";
 }
 
 std::string Manuale::SetAccensione(const Time& t) {   //Imposta l'ora a cui accendere l'impianto (quella passata)
@@ -16,12 +15,12 @@ std::string Manuale::SetAccensione(const Time& t) {   //Imposta l'ora a cui acce
 
     if (acceso){
         //Se è già acceso dà errore
-        oss << "Impianto manuale: " << Nome << " con ID: " << ID << " è già acceso";
+        oss << "Impianto manuale: '" << Nome << "' , ID: '" << ID << "' e' già acceso";
         return oss.str();
     }
 
     tempoAccensione = t; //Imposta l'ora in cui dovrà accendersi
-    oss << "Accensione dell'impianto manuale: " << Nome << " con ID: " << ID << " impostata alle " << tempoAccensione;
+    oss << "Accensione dell'impianto manuale: '" << Nome << "' con ID: '" << ID << "' impostata alle " << tempoAccensione;
     return oss.str();
 }
 
@@ -35,7 +34,7 @@ void Manuale::Accendi(const Time& now) {  //Compara l'orario della serra (quello
 
         acceso = true;
         ultimaAccensione = now;
-        oss << "Impianto manuale: " << Nome << " con ID: " << ID << " è stato acceso";
+        oss << "Impianto manuale: '" << Nome << "', ID: '" << ID << "' e' stato acceso";
         logMessage(now, oss.str(), 0);
     }
 }
@@ -44,24 +43,24 @@ void Manuale::Spegni(const Time& now) {   //Se da comando viene spento --> Spegn
     std::ostringstream oss;
 
     if (!acceso) {  //Controlla che l'impianto non sia già spento
-        oss << "Impianto manuale: " << Nome << " con ID: " << ID << " è già spento";
+        oss << "Impianto manuale: '" << Nome << "', ID: '" << ID << "' e' già spento";
         logMessage(now, oss.str(), 1);
         return;
     }
 
     acceso = false;
-    oss << "Impianto manuale: " << Nome << " con ID: " << ID << " è stato spento";
+    oss << "Impianto manuale: '" << Nome << "', ID: '" << ID << "' e' stato spento";
     logMessage(now, oss.str(), 0);
 }
 
 std::string Manuale::toString() const{
     std::ostringstream oss;
-    oss << "Impianto manuale: " << Nome << ", ID: " << ID;
+    oss << "Impianto manuale: '" << Nome << "', ID: " << ID;
 
     if (acceso)
-        oss << ", stato impianto: acceso";
+        oss << ", acceso" << std::endl;
     else
-        oss << ", stato impianto: spento";
+        oss << ", spento" << std::endl;
 
     return oss.str();
 }

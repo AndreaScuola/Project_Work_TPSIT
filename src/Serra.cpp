@@ -7,57 +7,38 @@
 #include <iostream>
 #include <sstream>
 
-void Serra::Menu() {    //CODICE PROVVISORIO
-    int scelta;
-    bool esci = false;
+void Serra::Help() {
+    std::cout << R"(
 
-    while (!esci) {
-        std::cout << "\n--- Menu Serra ---\n";
-        std::cout << "1) Aggiungi Impianto (dummy)\n";
-        std::cout << "2) Rimuovi Impianto\n";
-        std::cout << "3) Aggiorna orario\n";
-        std::cout << "4) Stampa stato impianti\n";
-        std::cout << "5) Esci\n";
-        std::cout << "Scelta: ";
-        std::cin >> scelta;
+    ================== COMANDI DISPONIBILI ==================
 
-        switch (scelta) {
-            case 1: {
-                // Esempio: aggiunge un impianto fittizio (da sostituire con factory o input reale)
-                std::cout << "Aggiunta impianto dummy...\n";
-                Impianto* imp = new Automatico("DummyImpianto");  // Assumendo costruttore valido
-                AggiungiImpianto(imp);
-                break;
-            }
-            case 2: {
-                int id;
-                std::cout << "Inserisci ID impianto da rimuovere: ";
-                std::cin >> id;
-                RimuoviImpianto(id);
-                break;
-            }
-            case 3: {
-                int h, m;
-                std::cout << "Inserisci ora (0-23): ";
-                std::cin >> h;
-                std::cout << "Inserisci minuti (0-59): ";
-                std::cin >> m;
-                AggiornaOrario(h, m);
-                break;
-            }
-            case 4: {
-                StampaStato();
-                break;
-            }
-            case 5:
-                esci = true;
-            break;
-            default:
-                std::cout << "Scelta non valida.\n";
-        }
-    }
+      help                     - Mostra questo output
+      exit                     - Chiude il programma
+
+      set <ID> on              - Accende l'impianto manuale
+      set <ID> off             - Spegne l'impianto manuale
+      set <ID> <START>         - Accensione automatica impianto manuale
+      set <ID> <START> <STOP>  - Accensione automatica impianto automatico
+
+      rm <ID>                  - Rimuove i timer dell'impianto (reset a [00:00])
+      remove <ID>              - Rimuove completamente l'impianto
+
+      add manuale <Nome>       - Aggiunge un impianto manuale con nome <Nome>
+      add automatico <Nome>    - Aggiunge un impianto automatico con nome <Nome>
+      add adattivo <Nome>      - Aggiunge un impianto adattivo con nome <Nome>
+
+      show                     - Mostra lo stato e consumo di tutti gli impianti
+      show <ID>                - Mostra lo stato e i dettagli di un impianto
+
+      set time <HH:MM>         - Imposta l'orario attuale della serra
+      reset time               - Resetta l'orario a [00:00] e spegne tutti gli impianti
+      reset timers             - Rimuove tutti i timer mantenendo lo stato attuale
+      reset all                - Resetta orario, timer e spegne tutti gli impianti
+
+    ==========================================================
+
+    )" << std::endl;
 }
-
 
 void Serra::AggiornaOrario(int hour,int minutes) {
     now.Setter(hour, minutes, &Impianti);   //Passo l'ora da raggiungere al Setter --> Scorre minuto per minuto ed invoca i metodi degli impianti
@@ -88,6 +69,7 @@ void Serra::StampaStato() {
     if (Impianti.empty()) {
         oss << "Nessun impianto presente.\n";
     } else {
+        oss << "Stato serra:" << std::endl;
         for (Impianto* imp : Impianti) {
             if (imp != nullptr)
                 oss << imp->toString();
@@ -98,7 +80,6 @@ void Serra::StampaStato() {
 }
 
 void Serra::StampaStato(int ID) {
-    std::ostringstream oss;
     for (auto it = Impianti.begin(); it != Impianti.end(); it++) {
         if ((*it)->GetID() == ID) {   //Se l'ID è quello cercato  --> Stampa
             logMessage(now, (*it)->toString(), 0);
@@ -109,25 +90,38 @@ void Serra::StampaStato(int ID) {
     logMessage(now, "Errore nella stampa dell'impianto", 1);
 }
 
-void Serra::AccendiImpiantoManuale(int ID) {    //Accende sul momento l'impianto manuale scelto
-    for (auto it = Impianti.begin(); it != Impianti.end(); it++) {
-        if ((*it)->GetID() == ID) {   //Se l'ID è quello cercato e l'impianto è manuale
-            if (auto m = dynamic_cast<Manuale*>(*it)) {     //Prova a fare il cast in una classe Manuale
-                m->AccendiAdesso(now);  //Accende l'impianto da comando
+void Serra::AccendiImpiantoManuale(int ID) {    // Accende sul momento l'impianto manuale scelto
+    for (Impianto* imp : Impianti) {
+        if (imp->GetID() == ID) {
+            if (auto m = dynamic_cast<Manuale*>(imp)) {
+                // Chiamiamo il metodo specifico di Manuale per l'accensione “adesso”
+                // Supponendo che ti restituisca una stringa di log:
+                std::string msg = m->AccendiAdesso(now);
+                logMessage(now, msg, 0);
+                return;
+            } else {
+                // Il dispositivo esiste ma non è manuale
+                logMessage(now, "Errore: l'impianto non è di tipo Manuale", 1);
                 return;
             }
         }
     }
-    //Se non trova l'impianto
-    logMessage(now, "Errore nell'accensione' dell'impianto", 1);
+    // Se non trova l'impianto con quell'ID
+    logMessage(now, "Errore: impianto non trovato", 1);
 }
 
+
 void Serra::SpegniImpiantoManuale(int ID) {
-    std::ostringstream oss;
-    for (auto it = Impianti.begin(); it != Impianti.end(); it++) {
-        if ((*it)->GetID() == ID && typeid(*it) == typeid(Manuale)) {   //Se l'ID è quello cercato e l'impianto è manuale
-            (*it)->Spegni(now);
-            return;
+    for (auto imp : Impianti) {
+        if (imp->GetID() == ID) {
+            if (auto m = dynamic_cast<Manuale*>(imp)) {
+                m->Spegni(now);
+                return;
+            } else {
+                // l'ID c'è ma non è un Manuale
+                logMessage(now, "Errore: l'impianto non è di tipo Manuale", 1);
+                return;
+            }
         }
     }
     //Se non trova l'impianto
@@ -183,11 +177,13 @@ void Serra::RemoveTimer(int ID) {       //Setta a 00:00 accensione e spegnimento
         if (imp->GetID() == ID) {
             if (auto m = dynamic_cast<Manuale*>(imp)) {     //Prova a fare il cast in una classe Automatico
                 m->SetAccensione(Time(0, 0));
+                logMessage(now, "Timer dell'impianto scelto resettato", 0);
                 return;
             }
 
             else if (auto a = dynamic_cast<Automatico*>(imp)) {    //Prova a fare il cast in una classe Automatico
                 a->SetAccensione(Time(0, 0), Time(0, 0));
+                logMessage(now, "Timer dell'impianto scelto resettato", 0);
                 return;
             }
         }

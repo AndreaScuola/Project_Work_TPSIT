@@ -14,7 +14,7 @@ private:
 
 public:
     Serra() : now(0, 0), Impianti{} {} //Costruttore
-    void Menu();    //DA TOGLIERE
+    void Help();
     void AggiornaOrario(int hour,int minutes);
     void AggiungiImpianto(Impianto* impianto);
     void RimuoviImpianto(int ID);

@@ -9,7 +9,7 @@ private:
 
 public:
     explicit Manuale(const std::string& n);
-    void AccendiAdesso(const Time& t);
+    std::string AccendiAdesso(const Time& t);
     std::string SetAccensione(const Time& t);
 
     //Implementazione dei metodi puri

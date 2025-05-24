@@ -1,5 +1,5 @@
 #include <iostream>
-#include <fstream> // per scrivere nel file
+#include <fstream> //Per scrivere nel file
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -8,16 +8,20 @@
 #include "UserInterface.h"
 
 #include "Serra.h"
+#include "Manuale.h"    //Per la creazione degli impianti
+#include "Automatico.h"
+#include "Adattivo.h"
+
 
 void logMessage(const Time &time, const std::string &message, const int &errorLevel) {
     if (errorLevel == 0)
-        std::cout << "[" << time << "]\t" << message << std::endl;
+        std::cout << "[" << time << "]  " << message << std::endl;
     else if (errorLevel == 1)
-        std::cerr << "[" << time << "]\t" << message << std::endl;
+        std::cerr << "[" << time << "]  " << message << std::endl;
 
-    std::ofstream logFile("log.txt", std::ios::app);
+    std::ofstream logFile("../log/logFile.txt", std::ios::app);
     if (logFile)
-        logFile << "[" << time << "]\t" << message << std::endl;
+        logFile << "[" << time << "]  " << message << std::endl;
 }
 
 
@@ -65,9 +69,9 @@ std::vector<std::string> commandParser(const std::string &command) {
 }
 
 
-void processCommand(const std::string &command) {
+bool processCommand(const std::string &command) {
     //Log sull'orario corrente
-    logMessage(serra.getTime(), "L'orario attuale e' " + serra.getTime().GetTime(), 0);
+    //logMessage(serra.getTime(), "L'orario attuale e' " + serra.getTime().GetTime(), 0);
 
     auto tokens = commandParser(command);
     if (tokens.empty())
@@ -75,37 +79,46 @@ void processCommand(const std::string &command) {
 
     const std::string &action = tokens[0];
 
+    //----------- EXIT -----------
+    if (action == "exit") {
+        return false;
+    }
+
+    //----------- HELP -----------
+    if (action == "help") {
+        serra.Help();
+    }
     //----------- SET -----------
-    if (action == "set") {
+    else if (action == "set") {
         if (tokens.size() < 2)
             throw std::invalid_argument("Errore: comando 'set' incompleto.");
         const std::string &target = tokens[1];
 
-        //set time HH:MM
+        // set time HH:MM
         if (target == "time") {
             if (tokens.size() != 3)
                 throw std::invalid_argument("Errore: formato per 'set time' non valido. Usa: set time HH:MM");
             Time t(tokens[2]);
             serra.AggiornaOrario(t.GetHour(), t.GetMinute());
         }
-        //set ID on  --> Per impianti manuali
+        // set ID on  --> Per impianti manuali
         else if (tokens.size() == 3 && tokens[2] == "on") {
             int id = std::stoi(target);
             serra.AccendiImpiantoManuale(id);
         }
-        //set ID off  --> Per impianti manuali
+        // set ID off  --> Per impianti manuali
         else if (tokens.size() == 3 && tokens[2] == "off") {
             int id = std::stoi(target);
             serra.SpegniImpiantoManuale(id);
         }
-        //set ID START STOP --> Per impianti automatici
+        // set ID START STOP --> Per impianti automatici
         else if (tokens.size() == 4) {
             int id = std::stoi(target);
             Time start(tokens[2]);
             Time stop(tokens[3]);
             serra.SetTimer(id, start, stop);
         }
-        //set ID START --> Per impianti manuali
+        // set ID START --> Per impianti manuali
         else if (tokens.size() == 3) {
             int id = std::stoi(target);
             Time start(tokens[2]);
@@ -116,12 +129,20 @@ void processCommand(const std::string &command) {
         }
     }
 
-    //----------- RM -----------   --> Reset del timer di un impianto
+    //----------- RM (rimuove solo il timer) -----------
     else if (action == "rm") {
         if (tokens.size() != 2)
             throw std::invalid_argument("Errore: comando 'rm' non valido. Usa: rm ${ID}");
         int id = std::stoi(tokens[1]);
         serra.RemoveTimer(id);
+    }
+
+    //----------- REMOVE (rimuove l'impianto) -----------
+    else if (action == "remove") {
+        if (tokens.size() != 2)
+            throw std::invalid_argument("Errore: comando 'remove' non valido. Usa: remove ${ID}");
+        int id = std::stoi(tokens[1]);
+        serra.RimuoviImpianto(id);
     }
 
     //----------- SHOW -----------
@@ -154,7 +175,31 @@ void processCommand(const std::string &command) {
         }
     }
 
+    //----------- ADD -----------
+    else if (action == "add") {
+        //add {manuale|automatico|adattivo} {nomeImpianto}
+        if (tokens.size() != 3)
+            throw std::invalid_argument("Errore: comando 'add' non valido. Usa: add {manuale|automatico|adattivo} {nomeImpianto}");
+        const std::string &type = tokens[1];
+        const std::string &name = tokens[2];
+
+        if (type == "manuale") {
+            serra.AggiungiImpianto(new Manuale(name));
+        }
+        else if (type == "automatico") {
+            serra.AggiungiImpianto(new Automatico(name));
+        }
+        else if (type == "adattivo") {
+            serra.AggiungiImpianto(new Adattivo(name));
+        }
+        else {
+            throw std::invalid_argument("Errore: tipo 'add' non valido. Usa: add manuale|automatico|adattivo {nomeImpianto}");
+        }
+    }
+
     else {
         throw std::invalid_argument("Errore: comando '" + action + "' non riconosciuto.");
     }
+
+    return true; //continua
 }
