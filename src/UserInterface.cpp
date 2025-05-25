@@ -15,9 +15,9 @@
 
 void logMessage(const Time &time, const std::string &message, const int &errorLevel) {//Scrive un messaggio e lo inserisce in un file di testo
     if (errorLevel == 0)
-        std::cout << "[" << time << "]  " << message << std::endl;
+        std::cout << " [" << time << "]  " << message << std::endl;
     else if (errorLevel == 1)
-        std::cerr << "[" << time << "]  " << message << std::endl;
+        std::cerr << " [" << time << "]  " << message << std::endl;
 
     std::ofstream logFile("../log/logFile.txt", std::ios::app);
     if (logFile)
