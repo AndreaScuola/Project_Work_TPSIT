@@ -57,7 +57,7 @@ void Manuale::Spegni(const Time& now) {   //Se da comando viene spento --> Spegn
     std::ostringstream oss;
 
     if (!acceso) {  //Controlla che l'impianto non sia già spento
-        oss << "Impianto manuale: '" << Nome << "', ID: '" << ID << "' e' già spento";
+        oss << "Impianto manuale: '" << Nome << "', ID: '" << ID << "' e' gia' spento";
         logMessage(now, oss.str(), 1);
         return;
     }
