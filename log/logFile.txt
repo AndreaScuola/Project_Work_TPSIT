@@ -1,0 +1,11 @@
+[00:00]  Impianto: 'Automatico1', ID: '1' aggiunto con successo
+[00:00]  Impianto: 'Manuale1', ID: '2' aggiunto con successo
+[00:00]  Impianto: 'Adattivo1', ID: '3' aggiunto con successo
+[00:00]  Impianto: 'manuale2', ID: '4' aggiunto con successo
+[00:00]  L'impianto manuale con ID: '4' e' stato acceso con successo
+[00:00]  L'impianto manuale con ID: '2' e' stato acceso con successo
+[00:00]  Accensione dell'impianto automatico: 'Automatico1', ID: '1' impostata alle 00:30
+[00:30]  Impianto automatico: 'Automatico1', ID: '1' e' stato acceso e continuera' fino alle [01:05]
+[01:00]  Ora impostata raggiunta con successo
+[01:05]  Impianto automatico: 'Automatico1' con ID: '1' e' stato spento
+[01:20]  Ora impostata raggiunta con successo
