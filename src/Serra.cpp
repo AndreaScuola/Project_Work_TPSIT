@@ -15,22 +15,22 @@ void Serra::Help() {
       help                     - Mostra questo output
       exit                     - Chiude il programma
 
-      set <ID> on              - Accende l'impianto manuale
-      set <ID> off             - Spegne l'impianto manuale
-      set <ID> <START>         - Accensione automatica impianto manuale
-      set <ID> <START> <STOP>  - Accensione automatica impianto automatico
+      set {ID} on              - Accende l'impianto manuale
+      set {ID} off             - Spegne l'impianto manuale
+      set {ID} {START}         - Accensione automatica impianto manuale
+      set {ID} {START} {STOP}  - Accensione automatica impianto automatico
 
-      rm <ID>                  - Rimuove i timer dell'impianto (reset a [00:00])
-      remove <ID>              - Rimuove completamente l'impianto
+      rm {ID}                  - Rimuove i timer dell'impianto (reset a [00:00])
+      remove {ID}              - Rimuove completamente l'impianto
 
-      add manuale <Nome>       - Aggiunge un impianto manuale con nome <Nome>
-      add automatico <Nome>    - Aggiunge un impianto automatico con nome <Nome>
-      add adattivo <Nome>      - Aggiunge un impianto adattivo con nome <Nome>
+      add manuale {Nome}       - Aggiunge un impianto manuale con nome {Nome}
+      add automatico {Nome}    - Aggiunge un impianto automatico con nome {Nome}
+      add adattivo {Nome}      - Aggiunge un impianto adattivo con nome {Nome}
 
       show                     - Mostra lo stato e consumo di tutti gli impianti
-      show <ID>                - Mostra lo stato e i dettagli di un impianto
+      show {ID}                - Mostra lo stato e i dettagli di un impianto
 
-      set time <HH:MM>         - Imposta l'orario attuale della serra
+      set time {HH:MM}         - Imposta l'orario attuale della serra
       reset time               - Resetta l'orario a [00:00] e spegne tutti gli impianti
       reset timers             - Rimuove tutti i timer mantenendo lo stato attuale
       reset all                - Resetta orario, timer e spegne tutti gli impianti
@@ -41,17 +41,24 @@ void Serra::Help() {
 }
 
 void Serra::AggiornaOrario(int hour,int minutes) {
+    if (hour < 0 || hour > 23 || minutes < 0 || minutes > 59) { //Controlla se l'orario è corretto
+        logMessage(now, "Ora non valida", 1);
+        return;
+    }
+
     now.Setter(hour, minutes, &Impianti);   //Passo l'ora da raggiungere al Setter --> Scorre minuto per minuto ed invoca i metodi degli impianti
 }
 
-void Serra::AggiungiImpianto(Impianto* impianto) {//Aggiunge un impianto alla serra
+void Serra::AggiungiImpianto(Impianto* impianto) {    //Aggiunge un impianto alla serra
+    std::ostringstream oss;
+
     if (impianto == NULL)
         return;
 
     Impianti.push_back(impianto);
-    logMessage(now, "Impianto aggiunto con successo", 0);
+    oss << "Impianto: '" << impianto->GetNome() << "', ID: '" << impianto->GetID() <<"' aggiunto con successo";
+    logMessage(now, oss.str(), 0);
 }
-
 
 void Serra::RimuoviImpianto(int ID) {//Rimuove un impianto dalla serra
     for (auto it = Impianti.begin(); it != Impianti.end(); it++) {
@@ -64,7 +71,7 @@ void Serra::RimuoviImpianto(int ID) {//Rimuove un impianto dalla serra
     std::cout << "ERRORE! Impianto non trovato" << std::endl;
 }
 
-void Serra::StampaStato() {//Stampa lo stato della serra
+void Serra::StampaStato() {    //Stampa lo stato della serra
     std::ostringstream oss;
 
     if (Impianti.empty()) {
@@ -80,7 +87,7 @@ void Serra::StampaStato() {//Stampa lo stato della serra
     logMessage(now, oss.str(), 0);
 }
 
-void Serra::StampaStato(int ID) {//Stampa lo stato dell'impianto designato
+void Serra::StampaStato(int ID) {    //Stampa lo stato dell'impianto designato
     for (auto it = Impianti.begin(); it != Impianti.end(); it++) {
         if ((*it)->GetID() == ID) {   //Se l'ID è quello cercato  --> Stampa
             logMessage(now, (*it)->toString(), 0);
@@ -91,35 +98,35 @@ void Serra::StampaStato(int ID) {//Stampa lo stato dell'impianto designato
     logMessage(now, "Errore nella stampa dell'impianto", 1);
 }
 
-void Serra::AccendiImpiantoManuale(int ID) {    // Accende sul momento l'impianto manuale scelto
+void Serra::AccendiImpiantoManuale(int ID) {    //Accende sul momento l'impianto manuale scelto
     for (Impianto* imp : Impianti) {
         if (imp->GetID() == ID) {
             if (auto m = dynamic_cast<Manuale*>(imp)) {
-                // Chiamiamo il metodo specifico di Manuale per l'accensione “adesso”
-                // Supponendo che ti restituisca una stringa di log:
+                //Accende l'impianto manuale da comando e non da timer
                 std::string msg = m->AccendiAdesso(now);
                 logMessage(now, msg, 0);
                 return;
             } else {
-                // Il dispositivo esiste ma non è manuale
+                //Il dispositivo esiste ma non è manuale
                 logMessage(now, "Errore: l'impianto non e' di tipo Manuale", 1);
                 return;
             }
         }
     }
-    // Se non trova l'impianto con quell'ID
+    //Se non trova l'impianto con quell'ID
     logMessage(now, "Errore: impianto non trovato", 1);
 }
 
 
-void Serra::SpegniImpiantoManuale(int ID) {//Spegne l'impianto manuale scelto
+void Serra::SpegniImpiantoManuale(int ID) { //Spegne l'impianto manuale scelto
     for (auto imp : Impianti) {
         if (imp->GetID() == ID) {
             if (auto m = dynamic_cast<Manuale*>(imp)) {
                 m->Spegni(now);
                 return;
-            } else {
-                // l'ID c'è ma non è un Manuale
+            }
+            else {
+                //l'ID c'è ma non è un Manuale
                 logMessage(now, "Errore: l'impianto non e' di tipo Manuale", 1);
                 return;
             }
@@ -129,11 +136,11 @@ void Serra::SpegniImpiantoManuale(int ID) {//Spegne l'impianto manuale scelto
     logMessage(now, "Errore nello spegnimento dell'impianto", 1);
 }
 
-std::vector<Impianto*> Serra::getImpianti() {//Returna gli impianti
+std::vector<Impianto*> Serra::getImpianti() {   //Returna gli impianti
     return Impianti;
 }
 
-Time Serra::getTime() {//Returna l'orario della serra
+Time Serra::getTime() { //Returna l'orario della serra
     return now;
 }
 
@@ -170,8 +177,6 @@ void Serra::SetTimer(int ID, Time start, Time stop) {   //Accensione impianto Au
     //ID non trovato
     logMessage(now, "Errore: nessun impianto con ID '" + std::to_string(ID)+"'", 1);
 }
-
-//RESET TIMER
 
 void Serra::RemoveTimer(int ID) {       //Setta a 00:00 accensione e spegnimento dell'impianto cercato
     for (auto imp : Impianti) {

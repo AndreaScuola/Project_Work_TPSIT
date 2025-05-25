@@ -18,7 +18,7 @@ public:
     Time(std::string strOra);
 
     void Setter(int h, int m, std::vector<Impianto*>* impianti = nullptr);
-    Time operator++(int); //MODIFICARE
+    Time operator++(int);
     bool operator==(const Time &other) const;   //Parametri da confrontare, const perché non vanno modificati
     std::string GetTime() const;
     void ResetTime(){hour = 0; minute = 0;};

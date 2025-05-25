@@ -15,7 +15,7 @@ void Adattivo::gestioneAdattivo(const Time& t) {
         if (minutiAcceso == 60) {   //Aumento di temperatura ogni ora
             minutiAcceso = 0;
             temperatura += randomFloat(0.75f, 1.0f);
-            Spegni(t);
+            Spegni(t);  //Verifica se è neccessario spegnere l'impianto in base alla temperatura
         }
     }
     else {  //Se è spento --> ogni ora -(0.01-0.05) --> se temp < 25 --> Accendi
@@ -34,8 +34,7 @@ float Adattivo::randomFloat(float min, float max) { //Random
 }
 
 void Adattivo::Avanza(const Time &now) {
-    Accendi(now);
-    Spegni(now);
+    gestioneAdattivo(now);  //Ad ogni minuto viene chiamato gestione adattivo --> Aumento/diminuzione temperatura e accensione/spegnimento impianto
 }
 
 
@@ -61,7 +60,7 @@ void Adattivo::Spegni(const Time& now) { //Spegne l'impianto se la temperatura s
     }
 }
 
-std::string Adattivo::toString() const{//Returna tutte le informazioni dell'impianto
+std::string Adattivo::toString() const{ //Returna tutte le informazioni dell'impianto
     std::ostringstream oss;
     oss << "Impianto adattivo: '" << Nome << "', ID: '" << ID << "', temperatura: " << temperatura;
 
