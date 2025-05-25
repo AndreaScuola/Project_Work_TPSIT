@@ -11,27 +11,30 @@
 #define MAX_MINUTE 59
 
 
-Time::Time(std::string strOra) {    //Costruttore: a partire da una stringa crea il Time
-    if (strOra.size() == 5 && strOra[2] == ':') {
-        try {
-            hour = std::stoi(strOra.substr(0, 2));
-            minute = std::stoi(strOra.substr(3, 2));
+Time::Time(const std::string& strOra) {    //Costruttore: a partire da una stringa crea il Time
+    auto pos = strOra.find(':');    //Trova la posizione dei ':'
 
-            if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
-                hour = 0;
-                minute = 0;
-                logMessage(*this, "Errore nella creazione di Time: orario non valido", 1);
-            }
-        } catch (...) {
-            hour = 0;
-            minute = 0;
-            logMessage(*this, "Errore nella creazione di Time", 1);
-        }
-    } else {
+    if (pos == std::string::npos) {
+        logMessage(*this, "Formato non valido, deve essere h:mm o hh:mm", 1);
         hour = 0;
         minute = 0;
-        logMessage(*this, "Formato non valido, deve essere hh:mm", 1);
+        return;
     }
+
+    //Prende ora e minuti, poi fa i controlli che siano validi
+    int h = std::stoi(strOra.substr(0, pos));
+    int m = std::stoi(strOra.substr(pos + 1));
+
+    if (h < 0 || h > 23 || m < 0 || m > 59) {
+        logMessage(*this, "Errore nella creazione di Time: orario non valido", 1);
+        hour = 0;
+        minute = 0;
+        return;
+    }
+
+    //Imposta l'ora scelta
+    hour = h;
+    minute = m;
 }
 
 void Time::Setter(int h, int m, std::vector<Impianto*>* impianti) { //Setter per l'ora

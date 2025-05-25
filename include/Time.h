@@ -15,7 +15,7 @@ private:
 public:
     Time() {hour = 0; minute = 0;}  //Costruttore di default
     Time(int h, int m) : hour{h}, minute{m} {}  //Costruttore valorizzato
-    Time(std::string strOra);
+    Time(const std::string& strOra);
 
     void Setter(int h, int m, std::vector<Impianto*>* impianti = nullptr);
     Time operator++(int);

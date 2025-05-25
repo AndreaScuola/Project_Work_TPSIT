@@ -6,18 +6,18 @@
 #include "Adattivo.h"
 #include "UserInterface.h"
 
-extern Serra serra;         //dichiarato in UserInterface.cpp
+extern Serra serra;         //Dichiarato in UserInterface.cpp
 
 int main() {
     //Impianti sample per testing più veloce
-    std::cout << "Impianti si sample per testing piu' veloce:" << std::endl;
+    std::cout << "Impianti di sample per testing piu' veloce:" << std::endl;
     serra.AggiungiImpianto(new Automatico("Automatico1"));
     serra.AggiungiImpianto(new Manuale("Manuale1"));
     serra.AggiungiImpianto(new Adattivo("Adattivo1"));
 
 
     std::string command;
-    std::cout << "\n==============================================\nScrivi 'help' per la lista dei comandi eseguibili \nAlcuni dei comandi hanno scritto {campo}, bisogna scrivere il valore del campo richiesto \nEs. 'set time 01:30' o 'set 2 on'\n==============================================\n"<< std::endl;
+    std::cout << "\n==============================================\nScrivi 'help' per la lista dei comandi eseguibili \nAlcuni dei comandi hanno scritto {campo}, bisogna scrivere il valore del campo richiesto \n(es. 'set time 1:30' o 'set 2 on')\n==============================================\n"<< std::endl;
     while (true) {
         std::cout << "Scrivi un comando: ";
         std::getline(std::cin, command);
