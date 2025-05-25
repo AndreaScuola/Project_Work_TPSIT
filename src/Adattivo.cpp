@@ -61,7 +61,7 @@ void Adattivo::Spegni(const Time& now) { //Spegne l'impianto se la temperatura s
     }
 }
 
-std::string Adattivo::toString() const{
+std::string Adattivo::toString() const{//Returna tutte le informazioni dell'impianto
     std::ostringstream oss;
     oss << "Impianto adattivo: '" << Nome << "', ID: '" << ID << "', temperatura: " << temperatura;
 

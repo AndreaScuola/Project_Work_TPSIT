@@ -44,7 +44,7 @@ void Serra::AggiornaOrario(int hour,int minutes) {
     now.Setter(hour, minutes, &Impianti);   //Passo l'ora da raggiungere al Setter --> Scorre minuto per minuto ed invoca i metodi degli impianti
 }
 
-void Serra::AggiungiImpianto(Impianto* impianto) {
+void Serra::AggiungiImpianto(Impianto* impianto) {//Aggiunge un impianto alla serra
     if (impianto == NULL)
         return;
 
@@ -53,7 +53,7 @@ void Serra::AggiungiImpianto(Impianto* impianto) {
 }
 
 
-void Serra::RimuoviImpianto(int ID) {
+void Serra::RimuoviImpianto(int ID) {//Rimuove un impianto dalla serra
     for (auto it = Impianti.begin(); it != Impianti.end(); it++) {
         if ((*it)->GetID() == ID) {
             Impianti.erase(it);
@@ -64,7 +64,7 @@ void Serra::RimuoviImpianto(int ID) {
     std::cout << "ERRORE! Impianto non trovato" << std::endl;
 }
 
-void Serra::StampaStato() {
+void Serra::StampaStato() {//Stampa lo stato della serra
     std::ostringstream oss;
 
     if (Impianti.empty()) {
@@ -80,7 +80,7 @@ void Serra::StampaStato() {
     logMessage(now, oss.str(), 0);
 }
 
-void Serra::StampaStato(int ID) {
+void Serra::StampaStato(int ID) {//Stampa lo stato dell'impianto designato
     for (auto it = Impianti.begin(); it != Impianti.end(); it++) {
         if ((*it)->GetID() == ID) {   //Se l'ID è quello cercato  --> Stampa
             logMessage(now, (*it)->toString(), 0);
@@ -112,7 +112,7 @@ void Serra::AccendiImpiantoManuale(int ID) {    // Accende sul momento l'impiant
 }
 
 
-void Serra::SpegniImpiantoManuale(int ID) {
+void Serra::SpegniImpiantoManuale(int ID) {//Spegne l'impianto manuale scelto
     for (auto imp : Impianti) {
         if (imp->GetID() == ID) {
             if (auto m = dynamic_cast<Manuale*>(imp)) {
@@ -129,11 +129,11 @@ void Serra::SpegniImpiantoManuale(int ID) {
     logMessage(now, "Errore nello spegnimento dell'impianto", 1);
 }
 
-std::vector<Impianto*> Serra::getImpianti() {
+std::vector<Impianto*> Serra::getImpianti() {//Returna gli impianti
     return Impianti;
 }
 
-Time Serra::getTime() {
+Time Serra::getTime() {//Returna l'orario della serra
     return now;
 }
 

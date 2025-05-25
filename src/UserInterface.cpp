@@ -13,7 +13,7 @@
 #include "Adattivo.h"
 
 
-void logMessage(const Time &time, const std::string &message, const int &errorLevel) {
+void logMessage(const Time &time, const std::string &message, const int &errorLevel) {//Scrive un messaggio e lo inserisce in un file di testo
     if (errorLevel == 0)
         std::cout << "[" << time << "]  " << message << std::endl;
     else if (errorLevel == 1)
@@ -26,7 +26,7 @@ void logMessage(const Time &time, const std::string &message, const int &errorLe
 
 
 Serra serra;
-std::vector<std::string> commandParser(const std::string &command) {
+std::vector<std::string> commandParser(const std::string &command) {//Divide il comando in token per l'utilizzo nel processCommand
     std::vector<std::string> tokens;
     std::istringstream ss(command);
     std::string token;

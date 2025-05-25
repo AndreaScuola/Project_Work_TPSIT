@@ -35,7 +35,7 @@ Time::Time(std::string strOra) {    //Costruttore: a partire da una stringa crea
     }
 }
 
-void Time::Setter(int h, int m, std::vector<Impianto*>* impianti) {
+void Time::Setter(int h, int m, std::vector<Impianto*>* impianti) {//Setter per l'ora
     if (h < MIN_HOUR || h > MAX_HOUR || m < MIN_MINUTE || m > MAX_MINUTE) {
         logMessage(*this, "Ora non valida", 1);
         return;
@@ -55,7 +55,7 @@ void Time::Setter(int h, int m, std::vector<Impianto*>* impianti) {
 }
 
 
-Time Time::operator++(int) {  //MODIFICARE
+Time Time::operator++(int) {  //Operator per lo scorrere del tempo
     minute++;
 
     if (minute > MAX_MINUTE) {  //Controlla che min non sia >= 60
@@ -69,11 +69,11 @@ Time Time::operator++(int) {  //MODIFICARE
     return *this;
 }
 
-bool Time::operator==(const Time &other) const {
+bool Time::operator==(const Time &other) const {//Operator per il confronto tra orari
     return hour == other.hour && minute == other.minute;
 }
 
-std::string Time::GetTime() const {
+std::string Time::GetTime() const {//Returna l'orario in formato hh:mm
     //Usa due cifre per hour e minute
     std::string hh = (hour < 10 ? "0" : "") + std::to_string(hour);
     std::string mm = (minute < 10 ? "0" : "") + std::to_string(minute);
@@ -83,9 +83,9 @@ std::string Time::GetTime() const {
 std::ostream & operator<<(std::ostream &os, const Time &t) {
     return os << t.GetTime();
 }
-int Time::GetHour() const {
+int Time::GetHour() const {//Returna le ore
     return hour;
 }
-int Time::GetMinute() const {
+int Time::GetMinute() const {//Returna i minuti
     return minute;
 }

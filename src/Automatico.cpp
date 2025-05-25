@@ -53,7 +53,7 @@ void Automatico::Spegni(const Time& now) {    //Se è arrivata l'ora di spegners
     }
 }
 
-std::string Automatico::toString() const{
+std::string Automatico::toString() const{//Returna tutte le informazioni dell'impianto
     std::ostringstream oss;
     oss << "Impianto automatico: '" << Nome << "', ID: '" << ID
     << "', tempo accensione: " << tempoAccensione  << ", tempo spegnimento: " << tempoSpegnimento;

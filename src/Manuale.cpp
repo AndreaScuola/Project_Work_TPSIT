@@ -67,7 +67,7 @@ void Manuale::Spegni(const Time& now) {   //Se da comando viene spento --> Spegn
     logMessage(now, oss.str(), 0);
 }
 
-std::string Manuale::toString() const{
+std::string Manuale::toString() const{//Returna tutte le informazioni dell'impianto
     std::ostringstream oss;
     oss << "Impianto manuale: '" << Nome << "', ID: '" << ID<<"'";
 
