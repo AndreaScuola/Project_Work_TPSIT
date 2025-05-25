@@ -102,7 +102,7 @@ void Serra::AccendiImpiantoManuale(int ID) {    // Accende sul momento l'impiant
                 return;
             } else {
                 // Il dispositivo esiste ma non è manuale
-                logMessage(now, "Errore: l'impianto non è di tipo Manuale", 1);
+                logMessage(now, "Errore: l'impianto non e' di tipo Manuale", 1);
                 return;
             }
         }
@@ -120,7 +120,7 @@ void Serra::SpegniImpiantoManuale(int ID) {
                 return;
             } else {
                 // l'ID c'è ma non è un Manuale
-                logMessage(now, "Errore: l'impianto non è di tipo Manuale", 1);
+                logMessage(now, "Errore: l'impianto non e' di tipo Manuale", 1);
                 return;
             }
         }
@@ -151,7 +151,7 @@ void Serra::SetTimer(int ID, Time start) {  //Accensione impianto Manuale
         }
     }
     //ID non trovato
-    logMessage(now, "Errore: nessun impianto con ID " + std::to_string(ID), 1);
+    logMessage(now, "Errore: nessun impianto con ID '" + std::to_string(ID)+"'", 1);
 }
 
 void Serra::SetTimer(int ID, Time start, Time stop) {   //Accensione impianto Automatico
@@ -168,7 +168,7 @@ void Serra::SetTimer(int ID, Time start, Time stop) {   //Accensione impianto Au
         }
     }
     //ID non trovato
-    logMessage(now, "Errore: nessun impianto con ID " + std::to_string(ID), 1);
+    logMessage(now, "Errore: nessun impianto con ID '" + std::to_string(ID)+"'", 1);
 }
 
 //RESET TIMER

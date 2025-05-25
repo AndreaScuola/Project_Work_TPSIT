@@ -9,7 +9,7 @@ std::string Automatico::SetAccensione(const Time& oraAccensione, const Time& ora
 
     if (acceso){
         //Se è già acceso dà errore
-        oss << "Impianto automatico: '" << Nome << "', ID: '" << ID << "' e' già acceso";
+        oss << "Impianto automatico: '" << Nome << "', ID: '" << ID << "' e' gia' acceso";
         return oss.str();
     }
 
@@ -42,7 +42,7 @@ void Automatico::Spegni(const Time& now) {    //Se è arrivata l'ora di spegners
         std::ostringstream oss;
 
         if (!acceso) {  //Controlla che l'impianto non sia già spento
-            oss << "Impianto automatico: '" << Nome << "', ID: '" << ID << "' e' già spento";
+            oss << "Impianto automatico: '" << Nome << "', ID: '" << ID << "' e' gia' spento";
             logMessage(now, oss.str(), 1);
             return;
         }

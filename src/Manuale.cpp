@@ -69,7 +69,7 @@ void Manuale::Spegni(const Time& now) {   //Se da comando viene spento --> Spegn
 
 std::string Manuale::toString() const{
     std::ostringstream oss;
-    oss << "Impianto manuale: '" << Nome << "', ID: " << ID;
+    oss << "Impianto manuale: '" << Nome << "', ID: '" << ID<<"'";
 
     if (acceso)
         oss << ", acceso" << std::endl;
